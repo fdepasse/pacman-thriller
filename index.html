@@ -5,16 +5,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/normalise.css">
   <link rel="stylesheet" href="css/main.css">
-  <title>Pac-Man</title>
+  <link rel="icon" href="images/thriller-icon.ico">
+  <title>Pac-Man Thriller Edition</title>
 </head>
 
-<body>
-  
 
-  
-  <script src = "js/app.js"></script>
+<body>
+
+  <header>
+
+    <img id="logo" src="images/thriller-logo.png" alt="Thriller Logo">
+
+    <nav>
+      <div id="score">
+        <span>Score : </span>
+        <span id="points">1250</span>
+      </div>
+
+      <div id="life-bar">
+        <span>Lives : </span>
+        <span id="life-icons">
+        <img class="one-life" src="images/lives.png" alt="One Life">
+        <img class="one-life" src="images/lives.png" alt="One Life">
+        <img class="one-life" src="images/lives.png" alt="One Life">
+        </span>
+      </div>
+
+      <button id="start">Start Game</button>
+    </nav>
+
+  </header>
+
+
+  <main id="grid">
+
+  </main>
+
+
+  <script src="js/app.js"></script>
 </body>
 
 </html>

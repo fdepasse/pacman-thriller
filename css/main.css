@@ -1,3 +1,73 @@
+/* * Whole  Page styling */
 * {
   box-sizing: border-box;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(50, 57, 65);
+  font-family: 'Creepster', cursive;
+  font-size: 25px;
+  color: white;
+}
+
+/* * Header styling */
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: solid green 1px;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: solid blue 1px;
+  width: 700px;
+}
+
+#life-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+}
+
+#life-icons {
+padding: 0px 5px;
+}
+
+.one-life {
+  width: 25px;
+}
+
+#start {
+  background: rgb(255, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 2.5%;
+}
+
+
+/* * Main styling */
+main {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  width: 700px;
+  height: 700px;
+  border: solid red 1px;
+}
+
+
+
+
+
