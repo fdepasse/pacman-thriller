@@ -75,7 +75,8 @@ main {
 }
 
 /* * Items */
-.stones {
+
+.stone {
   background-image: url("../images/tomb-stone.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -83,7 +84,15 @@ main {
   background-position-y: center;
 }
 
-.full-moon {
+.dot {
+  background-image: url("../images/dot.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.moon {
   background-image: url("../images/full-moon.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -91,16 +100,25 @@ main {
   background-position-y: center;
 }
 
-.cherry {
-  background-image: url("../images/cherry.png");
+.tunnel-right{
+  font-size: 10px;
+  font-family: sans-serif;
+}
+
+.tunnel-left{
+  font-size: 10px;
+  font-family: sans-serif;
+}
+.pop-corn {
+  background-image: url("../images/pop-corn.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
 }
 
-
 /* * Characters */
+
 .mj {
   background-image: url("../images/mj.png");
   background-size: contain;
