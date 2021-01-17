@@ -39,8 +39,8 @@ giveClassToCells(cellsObject.moons, 'moon')
 function giveClasstoTunnel(cell, className) {
   selectCellId(cell).classList.add(className)
 }
-giveClasstoTunnel(161, 'tunnel-right')
-giveClasstoTunnel(144, 'tunnel-left')
+giveClasstoTunnel(cellsObject.tunnelright, 'tunnel-right')
+giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 
 // Tool to set the grid up
 // const cells = document.querySelectorAll('#grid div')
@@ -64,7 +64,9 @@ class Character {
 }
 
 // * MJ
-const michael = new Character('Michael', 243)
+// const michael = new Character('Michael', 243)
+const michael = new Character('Michael', 160)
+
 
 // * Zombies
 const zombies = []
@@ -74,8 +76,23 @@ const zombNews = new Character('News Zombie', 169)
 const zombPirate = new Character('Pirate Zombie', 172)
 zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
 
+
 // ? Full Moon Mode
 let fullMoon = false
+// IF true then select the cell where michael is, turn the class to werewolf all in an interval of 15s
+// Same rules for his movement except he eats the zombies
+
+
+// ? Score
+let points = 0
+
+// * Display the score
+const displayScore = document.querySelector('#points')
+displayScore.innerHTML = points
+
+
+// ? Lives
+let lives = 3
 
 
 // ! GAMEPLAY
@@ -90,12 +107,31 @@ document.addEventListener('keyup', (event) => {
 
   if (keyPressed === 'ArrowRight') {
     selectCellId(michael.position).classList.remove('mj')
-    if (selectCellId(michael.position + 1).className === 'stone') {
+    if (michael.position === cellsObject.tunnelright) {
+      michael.position = cellsObject.tunnelleft
+      selectCellId(cellsObject.tunnelleft).classList.add('mj')
+    } else if (selectCellId(michael.position + 1).className === 'stone') {
       selectCellId(michael.position).className = 'mj'
-    } else {
+    } else if (selectCellId(michael.position + 1).className === 'dot') {
+      michael.position++
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('dot')
+      points += 10
+      displayScore.innerHTML = points
+    } else if (selectCellId(michael.position + 1).className === 'moon') {
+      michael.position++
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('moon')
+      points += 50
+      displayScore.innerHTML = points
+      fullMoon = true
+    }  else {
       michael.position++
       selectCellId(michael.position).classList.add('mj')
     }
+  }
+})
+
     // if (keyPressed === 'ArrowLeft') {
     //   selectCellId(michael.position).classList.remove('mj')
     //   michael.position--
@@ -111,5 +147,3 @@ document.addEventListener('keyup', (event) => {
     //   michael.position += gridWidth
     //   selectCellId(michael.position).classList.add('mj')
     // }
-  }
-})
