@@ -64,8 +64,8 @@ class Character {
 }
 
 // * MJ
-// const michael = new Character('Michael', 243)
-const michael = new Character('Michael', 160)
+const michael = new Character('Michael', 243)
+// const michael = new Character('Michael', 160)
 
 
 // * Zombies
@@ -125,12 +125,85 @@ document.addEventListener('keyup', (event) => {
       points += 50
       displayScore.innerHTML = points
       fullMoon = true
-    }  else {
+    } else {
       michael.position++
       selectCellId(michael.position).classList.add('mj')
     }
   }
+  if (keyPressed === 'ArrowLeft') {
+    selectCellId(michael.position).classList.remove('mj')
+    if (michael.position === cellsObject.tunnelleft) {
+      michael.position = cellsObject.tunnelright
+      selectCellId(cellsObject.tunnelright).classList.add('mj')
+    } else if (selectCellId(michael.position - 1).className === 'stone') {
+      selectCellId(michael.position).className = 'mj'
+    } else if (selectCellId(michael.position - 1).className === 'dot') {
+      michael.position--
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('dot')
+      points += 10
+      displayScore.innerHTML = points
+    } else if (selectCellId(michael.position + 1).className === 'moon') {
+      michael.position--
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('moon')
+      points += 50
+      displayScore.innerHTML = points
+      fullMoon = true
+    } else {
+      michael.position--
+      selectCellId(michael.position).classList.add('mj')
+    }
+  }
+  if (keyPressed === 'ArrowUp') {
+    selectCellId(michael.position).classList.remove('mj')
+    if (selectCellId(michael.position - gridWidth).className === 'stone') {
+      selectCellId(michael.position).className = 'mj'
+    } else if (selectCellId(michael.position - gridWidth).className === 'dot') {
+      michael.position -= gridWidth
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('dot')
+      points += 10
+      displayScore.innerHTML = points
+    } else if (selectCellId(michael.position - gridWidth).className === 'moon') {
+      michael.position -= gridWidth
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('moon')
+      points += 50
+      displayScore.innerHTML = points
+      fullMoon = true
+    } else {
+      michael.position -= gridWidth
+      selectCellId(michael.position).classList.add('mj')
+    }
+  }
+  if (keyPressed === 'ArrowDown') {
+    selectCellId(michael.position).classList.remove('mj')
+    if (selectCellId(michael.position + gridWidth).className === 'stone') {
+      selectCellId(michael.position).className = 'mj'
+    } else if (selectCellId(michael.position + gridWidth).className === 'dot') {
+      michael.position += gridWidth
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('dot')
+      points += 10
+      displayScore.innerHTML = points
+    } else if (selectCellId(michael.position + gridWidth).className === 'moon') {
+      michael.position += gridWidth
+      selectCellId(michael.position).classList.add('mj')
+      selectCellId(michael.position).classList.remove('moon')
+      points += 50
+      displayScore.innerHTML = points
+      fullMoon = true
+    } else {
+      michael.position += gridWidth
+      selectCellId(michael.position).classList.add('mj')
+    }
+  }
 })
+
+
+
+
 
     // if (keyPressed === 'ArrowLeft') {
     //   selectCellId(michael.position).classList.remove('mj')
