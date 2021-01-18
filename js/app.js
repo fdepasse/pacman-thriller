@@ -1,4 +1,4 @@
-// ! THE GRID
+// ! SETTING THE GRID UP
 const grid = document.querySelector('#grid')
 const gridWidth = 18
 const cellsObject = {
@@ -9,7 +9,7 @@ const cellsObject = {
   tunnelleft: 144
 }
 
-// ? Useful to grab a cell by its Id
+// ? Useful to grab a cell by its id
 function selectCellId(cellId) {
   return document.getElementById(cellId)
 }
@@ -42,7 +42,7 @@ function giveClasstoTunnel(cell, className) {
 giveClasstoTunnel(cellsObject.tunnelright, 'tunnel-right')
 giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 
-// Tool to set the grid up
+// Tool to draw ther grid in the browser then copy and pasting the array frpm the console
 // const cells = document.querySelectorAll('#grid div')
 // cells.forEach((div) => {
 //   div.addEventListener('click', () => {
@@ -53,7 +53,7 @@ giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 // })
 
 
-//  ! VARIABLES
+//  ! CREATING THE CHARACTERS & GAME VARIABLES
 
 // ? Characters
 class Character {
@@ -64,23 +64,19 @@ class Character {
 }
 
 // * MJ
-const michael = new Character('Michael', 243)
-// const michael = new Character('Michael', 160)
-
+const michael = new Character('michael', 243)
 
 // * Zombies
 const zombies = []
-const zombMexican = new Character('Mexican Zombie', 115)
-const zombOffice = new Character('Office Zombie', 118)
-const zombNews = new Character('News Zombie', 169)
-const zombPirate = new Character('Pirate Zombie', 172)
+const zombMexican = new Character('mexican-zombie', 115)
+const zombOffice = new Character('office-zombie', 118)
+const zombNews = new Character('news-zombie', 169)
+const zombPirate = new Character('pirate-zombie', 172)
 zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
 
 
 // ? Full Moon Mode
 let fullMoon = false
-// IF true then select the cell where michael is, turn the class to werewolf all in an interval of 15s
-// Same rules for his movement except he eats the zombies
 
 
 // ? Score
@@ -98,10 +94,10 @@ let lives = 3
 // ! GAMEPLAY
 
 // ? Michael's behaviour
-
-// * Michael Moves with the Arrow Keys
+// * Michael appears on the grid
 selectCellId(michael.position).classList.add('mj')
 
+// * Michael moves with arrow keys are pressed
 document.addEventListener('keyup', (event) => {
   const keyPressed = event.key
 
@@ -201,22 +197,56 @@ document.addEventListener('keyup', (event) => {
   }
 })
 
+// ? Zombies behaviour
+// * Zombies appear on the grid
+zombies.forEach((zombie) => {
+  selectCellId(zombie.position).classList.add(zombie.charName)
+})
+
+// * Zombies move randomly: array of directions and assigning this direction randomly
+// * to each zombie in the for loop making sure they don't fo trough the stones, eat the dots or moons
+
+const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
 
+setTimeout(() => {
 
+  setInterval(() => {
 
-    // if (keyPressed === 'ArrowLeft') {
-    //   selectCellId(michael.position).classList.remove('mj')
-    //   michael.position--
-    //   selectCellId(michael.position).classList.add('mj')
-    // }
-    // if (keyPressed === 'ArrowUp') {
-    //   selectCellId(michael.position).classList.remove('mj')
-    //   michael.position -= gridWidth
-    //   selectCellId(michael.position).classList.add('mj')
-    // }
-    // if (keyPressed === 'ArrowDown') {
-    //   selectCellId(michael.position).classList.remove('mj')
-    //   michael.position += gridWidth
-    //   selectCellId(michael.position).classList.add('mj')
-    // }
+    zombies.forEach((zombie) => {
+
+      // Create a const to store the next move
+      const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
+
+      // Remove the class first
+      selectCellId(zombie.position).classList.remove(zombie.charName)
+
+      // Check which cell the Zombie is going to land next and adapt behaviour accordingly
+      if (zombie.position === cellsObject.tunnelright) {
+        if (randomDirection === 1) {
+          zombie.position = cellsObject.tunnelleft
+          selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName)
+        } else if (randomDirection === -1) {
+          zombie.position += randomDirection
+          selectCellId(zombie.position).classList.add(zombie.charName)
+        }
+      } else if (zombie.position === cellsObject.tunnelleft) {
+        if (randomDirection === -1) {
+          zombie.position = cellsObject.tunnelright
+          selectCellId(cellsObject.tunnelright).classList.add(zombie.charName)
+        } else if (randomDirection === 1) {
+          zombie.position += randomDirection
+          selectCellId(zombie.position).classList.add(zombie.charName)
+        } 
+      } else if (selectCellId(zombie.position + randomDirection).className === 'stone') {
+        selectCellId(zombie.position).className = zombie.charName
+      } else {
+        zombie.position += randomDirection
+        selectCellId(zombie.position).classList.add(zombie.charName)
+      }
+
+    })
+
+  }, 300)
+
+}, 1000)
