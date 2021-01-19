@@ -59,19 +59,31 @@ nav {
 
 /* * Main styling */
 
-main {
+#grid {
   display: flex;
   flex-flow: row wrap;
   width: 700px;
   height: 700px;
-  /* border: solid red 1px; */
 }
 
 #grid div {
-  /* border: solid 1px lightgrey; */
   font-size: 10px;
   font-family: sans-serif;
   color: transparent;
+}
+
+#display-result {
+  display: none;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 700px;
+  height: 700px;
+  text-align: center;
+ }
+
+#display-result img {
+  height: 300px;
 }
 
 /* * Items */

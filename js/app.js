@@ -60,7 +60,7 @@ class Character {
   constructor(charName, startPosition) {
     this.charName = charName
     this.startPosition = startPosition
-    this.position = startPosition
+    this.position = ''
   }
 }
 
@@ -80,17 +80,22 @@ zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
 let fullMoon = false
 
 
-// ? Score
+// ? Score and Result
 let points = 0
 
-// * Display the score
+// * Display the score during the game
 const displayScore = document.querySelector('#points')
 displayScore.innerHTML = points
+
+// * Display the result at the end of the game
+const displayResult = document.querySelector('#display-result')
+const displayResultTitle = document.querySelector('#result-title')
+const displayFinalScore = document.querySelector('#result-score')
 
 
 // ? Lives
 let lives = 3
-const displayLives = document.querySelector('#life-icons')
+const displayLives = Array.from(document.querySelectorAll('.one-life'))
 
 
 
@@ -98,7 +103,16 @@ const displayLives = document.querySelector('#life-icons')
 
 // ? Michael's behaviour
 // * Michael appears on the grid
-selectCellId(michael.position).classList.add('mj')
+function michaelToStartPosition() {
+  michael.position = michael.startPosition
+  selectCellId(michael.position).classList.add('mj')
+}
+michaelToStartPosition()
+
+function removeMichael() {
+  selectCellId(michael.position).classList.remove('mj')
+}
+
 
 
 // * Michael moves with arrow keys are pressed
@@ -203,24 +217,33 @@ document.addEventListener('keyup', (event) => {
 })
 
 
-// ? Zombies behaviour
+// ? ZOMBIES BEHAVIOUR
+
 // * Zombies appear on the grid
-zombies.forEach((zombie) => {
-  selectCellId(zombie.position).classList.add(zombie.charName)
-})
+function zombiesToStartPosition() {
+  return zombies.forEach((zombie) => {
+    zombie.position = zombie.startPosition
+    selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+  })
+}
+zombiesToStartPosition()
+
+// * Function to clear all zommbies from the grid
+function removeAllZombies() {
+  return zombies.forEach((zombie) => {
+    selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
+  })
+}
+
 
 // * Zombies move randomly: array of directions and assigning this direction randomly
 // * to each zombie in the for loop making sure they don't fo trough the stones, eat the dots or moons
 
 const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
-
-
-
-
 setTimeout(() => {
 
-  setInterval(() => {
+  const zombieInterval = setInterval(() => {
 
     zombies.forEach((zombie) => {
 
@@ -228,10 +251,32 @@ setTimeout(() => {
       const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
 
       // Remove the class first
-      selectCellId(zombie.position).classList.remove(zombie.charName,'zombie')
+      selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
 
-      // Check which cell the Zombie is going to land next and adapt behaviour accordingly
-      if (zombie.position === cellsObject.tunnelright) {
+
+      // MJ Encounter
+      if (zombie.position === michael.position && !fullMoon) {
+        selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+        removeMichael()
+        clearInterval(zombieInterval)
+        if (lives > 0) {
+          lives--
+          displayLives[lives].setAttribute('src', 'images/lives-lost.png')
+          setTimeout(() => {
+            removeAllZombies()
+          }, 1000)
+          setTimeout(() => {
+            michaelToStartPosition()
+            zombiesToStartPosition()
+          }, 3000)
+        } else {
+          grid.style.display = 'none'
+          displayResult.style.display = 'flex'
+          displayResultTitle.innerHTML = 'Game Over !'
+          displayFinalScore.innerHTML = `You scored ${points} points`
+        }
+        // Behaviour when navigating the grid when not coming accross MJ
+      } else if (zombie.position === cellsObject.tunnelright) {
         if (randomDirection === 1) {
           zombie.position = cellsObject.tunnelleft
           selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie')
@@ -259,17 +304,3 @@ setTimeout(() => {
   }, 300)
 
 }, 1000)
-
-
-// ? When Michael and Zombies clash
-
-// function michaelVsZombies{
-// if (selectCellId(michael.position).classList.contains('zombie')) {
-//   selectCellId(michael.position).classList.remove('mj')
-//   lives--
-// }
-// }
-
-// document.addEventListener('click', () => {
-//   displayLives.removeChild()
-// })
