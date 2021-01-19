@@ -253,12 +253,11 @@ setTimeout(() => {
       // Remove the class first
       selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
 
-
       // MJ Encounter
       if (zombie.position === michael.position && !fullMoon) {
         selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
         removeMichael()
-        clearInterval(zombieInterval)
+        // clearInterval(zombieInterval)
         if (lives > 0) {
           lives--
           displayLives[lives].setAttribute('src', 'images/lives-lost.png')
@@ -268,7 +267,7 @@ setTimeout(() => {
           setTimeout(() => {
             michaelToStartPosition()
             zombiesToStartPosition()
-          }, 3000)
+          }, 2000)
         } else {
           grid.style.display = 'none'
           displayResult.style.display = 'flex'
