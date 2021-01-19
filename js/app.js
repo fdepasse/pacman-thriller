@@ -237,69 +237,85 @@ function removeAllZombies() {
 
 
 // * Zombies move randomly: array of directions and assigning this direction randomly
-// * to each zombie in the for loop making sure they don't fo trough the stones, eat the dots or moons
+// * to each zombie in the for loop making sure they don't go trough the stones, eat the dots or moons
 
-const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
+// ? GAMEPLAY
 
-setTimeout(() => {
 
-  const zombieInterval = setInterval(() => {
+function playGame() {
 
-    zombies.forEach((zombie) => {
+  const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
-      // Create a const to store the next move
-      const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
+  setTimeout(() => {
 
-      // Remove the class first
-      selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
+    const zombieInterval = setInterval(() => {
 
-      // MJ Encounter
-      if (zombie.position === michael.position && !fullMoon) {
-        selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-        removeMichael()
-        // clearInterval(zombieInterval)
-        if (lives > 0) {
-          lives--
-          displayLives[lives].setAttribute('src', 'images/lives-lost.png')
-          setTimeout(() => {
-            removeAllZombies()
-          }, 1000)
-          setTimeout(() => {
-            michaelToStartPosition()
-            zombiesToStartPosition()
-          }, 2000)
+      zombies.forEach((zombie) => {
+
+        // Create a const to store the next move
+        const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
+
+        // Remove the class first
+        selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
+
+        // if MJ Encounter
+        if (zombie.position === michael.position && !fullMoon) {
+          selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+          removeMichael()
+          clearInterval(zombieInterval)
+          if (lives >= 1) {
+            lives--
+            console.log(lives)
+            displayLives[lives].setAttribute('src', 'images/lives-lost.png')
+            setTimeout(() => {
+              removeAllZombies()
+            }, 1000)
+            setTimeout(() => {
+              michaelToStartPosition()
+              zombiesToStartPosition()
+            }, 1000)
+            playGame()
+          } else {
+            grid.style.display = 'none'
+            displayResult.style.display = 'flex'
+            displayResultTitle.innerHTML = 'Game Over !'
+            displayFinalScore.innerHTML = `You scored ${points} points`
+          }
+
+          // else if = fullMoon
+
+
+          // else if no encounter
+        } else if (zombie.position === cellsObject.tunnelright) {
+          if (randomDirection === 1) {
+            zombie.position = cellsObject.tunnelleft
+            selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie')
+          } else {
+            zombie.position--
+            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+          }
+        } else if (zombie.position === cellsObject.tunnelleft) {
+          if (randomDirection === -1) {
+            zombie.position = cellsObject.tunnelright
+            selectCellId(cellsObject.tunnelright).classList.add(zombie.charName, 'zombie')
+          } else {
+            zombie.position++
+            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+          }
+        } else if (selectCellId(zombie.position + randomDirection).classList.contains('stone')) {
+          selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
         } else {
-          grid.style.display = 'none'
-          displayResult.style.display = 'flex'
-          displayResultTitle.innerHTML = 'Game Over !'
-          displayFinalScore.innerHTML = `You scored ${points} points`
-        }
-        // Behaviour when navigating the grid when not coming accross MJ
-      } else if (zombie.position === cellsObject.tunnelright) {
-        if (randomDirection === 1) {
-          zombie.position = cellsObject.tunnelleft
-          selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie')
-        } else {
-          zombie.position--
+          zombie.position += randomDirection
           selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
         }
-      } else if (zombie.position === cellsObject.tunnelleft) {
-        if (randomDirection === -1) {
-          zombie.position = cellsObject.tunnelright
-          selectCellId(cellsObject.tunnelright).classList.add(zombie.charName, 'zombie')
-        } else {
-          zombie.position++
-          selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-        }
-      } else if (selectCellId(zombie.position + randomDirection).classList.contains('stone')) {
-        selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-      } else {
-        zombie.position += randomDirection
-        selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-      }
 
-    })
+      })
 
-  }, 300)
+    }, 300)
 
-}, 1000)
+  }, 1000)
+
+}
+playGame()
+
+
