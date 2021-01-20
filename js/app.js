@@ -54,9 +54,9 @@ giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 // })
 
 
-//  ! CREATING THE CHARACTERS & GAME VARIABLES
+//  ! CREATING THE CHARACTERS
 
-// ? Characters
+// * Character Class
 class Character {
   constructor(charName, startPosition) {
     this.charName = charName
@@ -77,9 +77,10 @@ const zombPirate = new Character('pirate-zombie', 172)
 zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
 
 
+// ! GAME VARIABLES AND FUNCTIONS
+
 // ? Full Moon Mode
 let fullMoon = false
-
 
 // ? Score and Result
 let points = 0
@@ -94,15 +95,17 @@ const displayResultTitle = document.querySelector('#result-title')
 const displayResultImage = document.querySelector('#result-image')
 const displayFinalScore = document.querySelector('#result-score')
 
-// * Winning the game
+// * Winning and Losing the game
 const dotsAndMoonsArray = cellsObject.dots.concat(cellsObject.moons)
 
+// Check is there are still some dots and moons to take
 function areDotOrMoonsLeft() {
   return dotsAndMoonsArray.some((cell) => {
     return selectCellId(cell).className === 'dot' || selectCellId(cell).className === 'moon'
   })
 }
 
+// Display the result when the game is won
 function gameWon() {
   if (areDotOrMoonsLeft() === false) {
     grid.style.display = 'none'
@@ -114,6 +117,7 @@ function gameWon() {
   }
 }
 
+// Display the result when the game is lost
 function gameOver() {
   grid.style.display = 'none'
   displayResult.style.display = 'flex'
@@ -123,15 +127,40 @@ function gameOver() {
   displayFinalScore.innerHTML = `You scored ${points} points`
 }
 
+
 // ? Lives
 let lives = 3
 const displayLives = Array.from(document.querySelectorAll('.one-life'))
 
 
+// ? Pop Corn Bonus
+let popCornPosition
+
+function popCornRandomLocation() {
+  const popCornPossibleLocations = [115, 116, 117, 118, 133, 136, 151, 154, 169, 170, 171, 172, 241, 242, 243, 244]
+  const randomLocation = popCornPossibleLocations[Math.floor((Math.random() * popCornPossibleLocations.length))]
+  return popCornPosition = randomLocation
+}
+
+let popCornTime = 0
+
+function popCornMode() {
+  if (popCornTime === 1) {
+    popCornRandomLocation()
+    selectCellId(popCornPosition).classList.add('pop-corn')
+    return setTimeout(() => {
+      selectCellId(popCornPosition).classList.remove('pop-corn')
+      popCornTime = 0
+    }, 5000)
+  }
+}
+
+
+
 
 // ! GAMEPLAY
 
-// ? MICHAEL BEHAVIOUR
+// ? MICHAEL MOVEMENTS
 
 // * Michael appears on the grid
 function michaelToStartPosition() {
@@ -178,7 +207,6 @@ function michaelMoves(nameOfClass) {
       }
     }
     if (keyPressed === 'ArrowLeft') {
-
       selectCellId(michael.position).classList.remove(nameOfClass)
       if (michael.position === cellsObject.tunnelleft) {
         michael.position = cellsObject.tunnelright
@@ -253,7 +281,7 @@ michaelMoves('mj')
 
 
 
-// ? ZOMBIES BEHAVIOUR
+// ? ZOMBIES ON THE GRID
 
 // * Zombies appear on the grid
 function zombiesToStartPosition() {
@@ -273,7 +301,8 @@ function removeAllZombies() {
 
 
 
-// ? GAMEPLAY FUNCTION
+// ? GAMEPLAY FUNCTION WITH ZOMBIE BEHAVIOUR
+
 
 function playGame() {
 
@@ -282,18 +311,23 @@ function playGame() {
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
   // * Timeout to start the game after a couple of seconds
-  if (fullMoon === false) {
 
 
-    setTimeout(() => {
 
-      const zombieInterval = setInterval(() => {
+  setTimeout(() => {
 
-        zombies.forEach((zombie) => {
+    const zombieInterval = setInterval(() => {
 
+      popCornMode()
+
+      zombies.forEach((zombie) => {
+        gameWon()
+
+
+        if (fullMoon === false) {
           // * Check is there are still any dots or moon on the board
           // * If not game is won
-          gameWon()
+
 
           // * Create a const to store the next move
           const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
@@ -343,14 +377,19 @@ function playGame() {
             zombie.position += randomDirection
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
           }
+        }
+      })
 
-        })
+      if (points === 250 || points === 750) {
+        popCornTime++
+      }
 
-      }, 300)
+    }, 300)
 
-    }, 1000)
-    // ! else if fullmoon is true
-  }
+  }, 1000)
+  // ! else if fullmoon is true
 }
+
 playGame()
+
 
