@@ -163,17 +163,23 @@ function popCornMode() {
 // ? MICHAEL MOVEMENTS
 
 // * Michael appears on the grid
-function michaelToStartPosition() {
+function michaelToStartPosition(nameOfClass) {
   michael.position = michael.startPosition
-  selectCellId(michael.position).classList.add('mj')
+  selectCellId(michael.position).classList.add(nameOfClass)
 }
-michaelToStartPosition()
+michaelToStartPosition('mj')
 
 
 // * Useful to remove Michael from the grid when needed
 function removeMichael(nameOfClass) {
   selectCellId(michael.position).classList.remove(nameOfClass)
 }
+
+// * Set the directoions variables for intervals
+let rightInterval
+let leftInterval
+let downInterval
+let upInterval
 
 // * Michael moves with arrow keys are pressed
 function michaelMoves(nameOfClass) {
@@ -182,98 +188,119 @@ function michaelMoves(nameOfClass) {
     const keyPressed = event.key
 
     if (keyPressed === 'ArrowRight') {
-      selectCellId(michael.position).classList.remove(nameOfClass)
-      if (michael.position === cellsObject.tunnelright) {
-        michael.position = cellsObject.tunnelleft
-        selectCellId(cellsObject.tunnelleft).classList.add(nameOfClass)
-      } else if (selectCellId(michael.position + 1).classList.contains('stone')) {
-        selectCellId(michael.position).classList.add(nameOfClass)
-      } else if (selectCellId(michael.position + 1).classList.contains('dot')) {
-        michael.position++
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('dot')
-        points += 10
-        displayScore.innerHTML = points
-      } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
-        michael.position++
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('moon')
-        points += 50
-        displayScore.innerHTML = points
-        fullMoon = true
-      } else {
-        michael.position++
-        selectCellId(michael.position).classList.add(nameOfClass)
-      }
+      rightInterval = setInterval(() => {
+        selectCellId(michael.position).classList.remove(nameOfClass)
+        if (michael.position === cellsObject.tunnelright) {
+          michael.position = cellsObject.tunnelleft
+          selectCellId(cellsObject.tunnelleft).classList.add(nameOfClass)
+        } else if (selectCellId(michael.position + 1).classList.contains('stone')) {
+          selectCellId(michael.position).classList.add(nameOfClass)
+        } else if (selectCellId(michael.position + 1).classList.contains('dot')) {
+          michael.position++
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('dot')
+          points += 10
+          displayScore.innerHTML = points
+        } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
+          michael.position++
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('moon')
+          points += 50
+          displayScore.innerHTML = points
+          fullMoon = true
+        } else {
+          michael.position++
+          selectCellId(michael.position).classList.add(nameOfClass)
+        }
+      }, 600)
+      clearInterval(leftInterval)
+      clearInterval(downInterval)
+      clearInterval(upInterval)
     }
+
     if (keyPressed === 'ArrowLeft') {
-      selectCellId(michael.position).classList.remove(nameOfClass)
-      if (michael.position === cellsObject.tunnelleft) {
-        michael.position = cellsObject.tunnelright
-        selectCellId(cellsObject.tunnelright).classList.add(nameOfClass)
-      } else if (selectCellId(michael.position - 1).classList.contains('stone')) {
-        selectCellId(michael.position).classList.add(nameOfClass)
-      } else if (selectCellId(michael.position - 1).classList.contains('dot')) {
-        michael.position--
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('dot')
-        points += 10
-        displayScore.innerHTML = points
-      } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
-        michael.position--
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('moon')
-        points += 50
-        displayScore.innerHTML = points
-        fullMoon = true
-      } else {
-        michael.position--
-        selectCellId(michael.position).classList.add(nameOfClass)
-      }
+      leftInterval = setInterval(() => {
+        selectCellId(michael.position).classList.remove(nameOfClass)
+        if (michael.position === cellsObject.tunnelleft) {
+          michael.position = cellsObject.tunnelright
+          selectCellId(cellsObject.tunnelright).classList.add(nameOfClass)
+        } else if (selectCellId(michael.position - 1).classList.contains('stone')) {
+          selectCellId(michael.position).classList.add(nameOfClass)
+        } else if (selectCellId(michael.position - 1).classList.contains('dot')) {
+          michael.position--
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('dot')
+          points += 10
+          displayScore.innerHTML = points
+        } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
+          michael.position--
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('moon')
+          points += 50
+          displayScore.innerHTML = points
+          fullMoon = true
+        } else {
+          michael.position--
+          selectCellId(michael.position).classList.add(nameOfClass)
+        }
+      }, 600)
+      clearInterval(rightInterval)
+      clearInterval(downInterval)
+      clearInterval(upInterval)
     }
     if (keyPressed === 'ArrowUp') {
-      selectCellId(michael.position).classList.remove(nameOfClass)
-      if (selectCellId(michael.position - gridWidth).classList.contains('stone')) {
-        selectCellId(michael.position).classList.add(nameOfClass)
-      } else if (selectCellId(michael.position - gridWidth).classList.contains('dot')) {
-        michael.position -= gridWidth
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('dot')
-        points += 10
-        displayScore.innerHTML = points
-      } else if (selectCellId(michael.position - gridWidth).classList.contains('moon')) {
-        michael.position -= gridWidth
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('moon')
-        points += 50
-        displayScore.innerHTML = points
-        fullMoon = true
-      } else {
-        michael.position -= gridWidth
-        selectCellId(michael.position).classList.add(nameOfClass)
-      }
+      upInterval = setInterval(() => {
+        selectCellId(michael.position).classList.remove(nameOfClass)
+        if (selectCellId(michael.position - gridWidth).classList.contains('stone')) {
+          selectCellId(michael.position).classList.add(nameOfClass)
+        } else if (selectCellId(michael.position - gridWidth).classList.contains('dot')) {
+          michael.position -= gridWidth
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('dot')
+          points += 10
+          displayScore.innerHTML = points
+        } else if (selectCellId(michael.position - gridWidth).classList.contains('moon')) {
+          michael.position -= gridWidth
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('moon')
+          points += 50
+          displayScore.innerHTML = points
+          fullMoon = true
+        } else {
+          michael.position -= gridWidth
+          selectCellId(michael.position).classList.add(nameOfClass)
+        }
+      }, 600)
+      clearInterval(rightInterval)
+      clearInterval(downInterval)
+      clearInterval(leftInterval)
     }
     if (keyPressed === 'ArrowDown') {
-      selectCellId(michael.position).classList.remove(nameOfClass)
-      if (selectCellId(michael.position + gridWidth).classList.contains('stone')) {
-        selectCellId(michael.position).classList.add(nameOfClass)
-      } else if (selectCellId(michael.position + gridWidth).classList.contains('dot')) {
-        michael.position += gridWidth
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('dot')
-        points += 10
-        displayScore.innerHTML = points
-      } else if (selectCellId(michael.position + gridWidth).classList.contains('moon')) {
-        michael.position += gridWidth
-        selectCellId(michael.position).classList.add(nameOfClass)
-        selectCellId(michael.position).classList.remove('moon')
-        points += 50
-        displayScore.innerHTML = points
-        fullMoon = true
-      } else {
-        michael.position += gridWidth
-        selectCellId(michael.position).classList.add(nameOfClass)
-      }
+      downInterval = setInterval(() => {
+        selectCellId(michael.position).classList.remove(nameOfClass)
+        if (selectCellId(michael.position + gridWidth).classList.contains('stone')) {
+          selectCellId(michael.position).classList.add(nameOfClass)
+        } else if (selectCellId(michael.position + gridWidth).classList.contains('dot')) {
+          michael.position += gridWidth
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('dot')
+          points += 10
+          displayScore.innerHTML = points
+        } else if (selectCellId(michael.position + gridWidth).classList.contains('moon')) {
+          michael.position += gridWidth
+          selectCellId(michael.position).classList.add(nameOfClass)
+          selectCellId(michael.position).classList.remove('moon')
+          points += 50
+          displayScore.innerHTML = points
+          fullMoon = true
+        } else {
+          michael.position += gridWidth
+          selectCellId(michael.position).classList.add(nameOfClass)
+        }
+      }, 600)
+      clearInterval(rightInterval)
+      clearInterval(upInterval)
+      clearInterval(leftInterval)
     }
   })
 }
@@ -347,7 +374,7 @@ function playGame() {
                 removeAllZombies()
               }, 1000)
               setTimeout(() => {
-                michaelToStartPosition()
+                michaelToStartPosition('mj')
                 zombiesToStartPosition()
               }, 1000)
               playGame()
