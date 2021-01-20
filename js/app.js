@@ -1,4 +1,5 @@
 // ! SETTING THE GRID UP
+
 const grid = document.querySelector('#grid')
 const gridWidth = 18
 const cellsObject = {
@@ -90,8 +91,37 @@ displayScore.innerHTML = points
 // * Display the result at the end of the game
 const displayResult = document.querySelector('#display-result')
 const displayResultTitle = document.querySelector('#result-title')
+const displayResultImage = document.querySelector('#result-image')
 const displayFinalScore = document.querySelector('#result-score')
 
+// * Winning the game
+const dotsAndMoonsArray = cellsObject.dots.concat(cellsObject.moons)
+
+function areDotOrMoonsLeft() {
+  return dotsAndMoonsArray.some((cell) => {
+    return selectCellId(cell).className === 'dot' || selectCellId(cell).className === 'moon'
+  })
+}
+
+function gameWon() {
+  if (areDotOrMoonsLeft() === false) {
+    grid.style.display = 'none'
+    displayResult.style.display = 'flex'
+    displayResultTitle.innerHTML = 'Congratulations, you moonwalked this!'
+    displayResultImage.setAttribute('src', 'images/mj-happy.png')
+    displayResultImage.setAttribute('alt', 'Michael Jackson Happy')
+    displayFinalScore.innerHTML = `You scored ${points} points`
+  }
+}
+
+function gameOver() {
+  grid.style.display = 'none'
+  displayResult.style.display = 'flex'
+  displayResultTitle.innerHTML = 'Game Over'
+  displayResultImage.setAttribute('src', 'images/mj-zombie.png')
+  displayResultImage.setAttribute('alt', 'Zombie Michael Jackson')
+  displayFinalScore.innerHTML = `You scored ${points} points`
+}
 
 // ? Lives
 let lives = 3
@@ -101,7 +131,8 @@ const displayLives = Array.from(document.querySelectorAll('.one-life'))
 
 // ! GAMEPLAY
 
-// ? Michael's behaviour
+// ? MICHAEL BEHAVIOUR
+
 // * Michael appears on the grid
 function michaelToStartPosition() {
   michael.position = michael.startPosition
@@ -109,112 +140,117 @@ function michaelToStartPosition() {
 }
 michaelToStartPosition()
 
-function removeMichael() {
-  selectCellId(michael.position).classList.remove('mj')
+
+// * Useful to remove Michael from the grid when needed
+function removeMichael(nameOfClass) {
+  selectCellId(michael.position).classList.remove(nameOfClass)
 }
 
-
-
 // * Michael moves with arrow keys are pressed
-document.addEventListener('keyup', (event) => {
-  const keyPressed = event.key
+function michaelMoves(nameOfClass) {
 
-  if (keyPressed === 'ArrowRight') {
-    selectCellId(michael.position).classList.remove('mj')
-    if (michael.position === cellsObject.tunnelright) {
-      michael.position = cellsObject.tunnelleft
-      selectCellId(cellsObject.tunnelleft).classList.add('mj')
-    } else if (selectCellId(michael.position + 1).classList.contains('stone')) {
-      selectCellId(michael.position).classList.add('mj')
-    } else if (selectCellId(michael.position + 1).classList.contains('dot')) {
-      michael.position++
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('dot')
-      points += 10
-      displayScore.innerHTML = points
-    } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
-      michael.position++
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('moon')
-      points += 50
-      displayScore.innerHTML = points
-      fullMoon = true
-    } else {
-      michael.position++
-      selectCellId(michael.position).classList.add('mj')
-    }
-  }
-  if (keyPressed === 'ArrowLeft') {
+  document.addEventListener('keyup', (event) => {
+    const keyPressed = event.key
 
-    selectCellId(michael.position).classList.remove('mj')
-    if (michael.position === cellsObject.tunnelleft) {
-      michael.position = cellsObject.tunnelright
-      selectCellId(cellsObject.tunnelright).classList.add('mj')
-    } else if (selectCellId(michael.position - 1).classList.contains('stone')) {
-      selectCellId(michael.position).classList.add('mj')
-    } else if (selectCellId(michael.position - 1).classList.contains('dot')) {
-      michael.position--
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('dot')
-      points += 10
-      displayScore.innerHTML = points
-    } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
-      michael.position--
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('moon')
-      points += 50
-      displayScore.innerHTML = points
-      fullMoon = true
-    } else {
-      michael.position--
-      selectCellId(michael.position).classList.add('mj')
+    if (keyPressed === 'ArrowRight') {
+      selectCellId(michael.position).classList.remove(nameOfClass)
+      if (michael.position === cellsObject.tunnelright) {
+        michael.position = cellsObject.tunnelleft
+        selectCellId(cellsObject.tunnelleft).classList.add(nameOfClass)
+      } else if (selectCellId(michael.position + 1).classList.contains('stone')) {
+        selectCellId(michael.position).classList.add(nameOfClass)
+      } else if (selectCellId(michael.position + 1).classList.contains('dot')) {
+        michael.position++
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('dot')
+        points += 10
+        displayScore.innerHTML = points
+      } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
+        michael.position++
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('moon')
+        points += 50
+        displayScore.innerHTML = points
+        fullMoon = true
+      } else {
+        michael.position++
+        selectCellId(michael.position).classList.add(nameOfClass)
+      }
     }
-  }
-  if (keyPressed === 'ArrowUp') {
-    selectCellId(michael.position).classList.remove('mj')
-    if (selectCellId(michael.position - gridWidth).classList.contains('stone')) {
-      selectCellId(michael.position).classList.add('mj')
-    } else if (selectCellId(michael.position - gridWidth).classList.contains('dot')) {
-      michael.position -= gridWidth
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('dot')
-      points += 10
-      displayScore.innerHTML = points
-    } else if (selectCellId(michael.position - gridWidth).classList.contains('moon')) {
-      michael.position -= gridWidth
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('moon')
-      points += 50
-      displayScore.innerHTML = points
-      fullMoon = true
-    } else {
-      michael.position -= gridWidth
-      selectCellId(michael.position).classList.add('mj')
+    if (keyPressed === 'ArrowLeft') {
+
+      selectCellId(michael.position).classList.remove(nameOfClass)
+      if (michael.position === cellsObject.tunnelleft) {
+        michael.position = cellsObject.tunnelright
+        selectCellId(cellsObject.tunnelright).classList.add(nameOfClass)
+      } else if (selectCellId(michael.position - 1).classList.contains('stone')) {
+        selectCellId(michael.position).classList.add(nameOfClass)
+      } else if (selectCellId(michael.position - 1).classList.contains('dot')) {
+        michael.position--
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('dot')
+        points += 10
+        displayScore.innerHTML = points
+      } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
+        michael.position--
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('moon')
+        points += 50
+        displayScore.innerHTML = points
+        fullMoon = true
+      } else {
+        michael.position--
+        selectCellId(michael.position).classList.add(nameOfClass)
+      }
     }
-  }
-  if (keyPressed === 'ArrowDown') {
-    selectCellId(michael.position).classList.remove('mj')
-    if (selectCellId(michael.position + gridWidth).classList.contains('stone')) {
-      selectCellId(michael.position).classList.add('mj')
-    } else if (selectCellId(michael.position + gridWidth).classList.contains('dot')) {
-      michael.position += gridWidth
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('dot')
-      points += 10
-      displayScore.innerHTML = points
-    } else if (selectCellId(michael.position + gridWidth).classList.contains('moon')) {
-      michael.position += gridWidth
-      selectCellId(michael.position).classList.add('mj')
-      selectCellId(michael.position).classList.remove('moon')
-      points += 50
-      displayScore.innerHTML = points
-      fullMoon = true
-    } else {
-      michael.position += gridWidth
-      selectCellId(michael.position).classList.add('mj')
+    if (keyPressed === 'ArrowUp') {
+      selectCellId(michael.position).classList.remove(nameOfClass)
+      if (selectCellId(michael.position - gridWidth).classList.contains('stone')) {
+        selectCellId(michael.position).classList.add(nameOfClass)
+      } else if (selectCellId(michael.position - gridWidth).classList.contains('dot')) {
+        michael.position -= gridWidth
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('dot')
+        points += 10
+        displayScore.innerHTML = points
+      } else if (selectCellId(michael.position - gridWidth).classList.contains('moon')) {
+        michael.position -= gridWidth
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('moon')
+        points += 50
+        displayScore.innerHTML = points
+        fullMoon = true
+      } else {
+        michael.position -= gridWidth
+        selectCellId(michael.position).classList.add(nameOfClass)
+      }
     }
-  }
-})
+    if (keyPressed === 'ArrowDown') {
+      selectCellId(michael.position).classList.remove(nameOfClass)
+      if (selectCellId(michael.position + gridWidth).classList.contains('stone')) {
+        selectCellId(michael.position).classList.add(nameOfClass)
+      } else if (selectCellId(michael.position + gridWidth).classList.contains('dot')) {
+        michael.position += gridWidth
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('dot')
+        points += 10
+        displayScore.innerHTML = points
+      } else if (selectCellId(michael.position + gridWidth).classList.contains('moon')) {
+        michael.position += gridWidth
+        selectCellId(michael.position).classList.add(nameOfClass)
+        selectCellId(michael.position).classList.remove('moon')
+        points += 50
+        displayScore.innerHTML = points
+        fullMoon = true
+      } else {
+        michael.position += gridWidth
+        selectCellId(michael.position).classList.add(nameOfClass)
+      }
+    }
+  })
+}
+michaelMoves('mj')
+
 
 
 // ? ZOMBIES BEHAVIOUR
@@ -236,86 +272,85 @@ function removeAllZombies() {
 }
 
 
-// * Zombies move randomly: array of directions and assigning this direction randomly
-// * to each zombie in the for loop making sure they don't go trough the stones, eat the dots or moons
 
-// ? GAMEPLAY
-
+// ? GAMEPLAY FUNCTION
 
 function playGame() {
 
+
+  // * Storing all possible directions for the Zombies
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
-  setTimeout(() => {
+  // * Timeout to start the game after a couple of seconds
+  if (fullMoon === false) {
 
-    const zombieInterval = setInterval(() => {
 
-      zombies.forEach((zombie) => {
+    setTimeout(() => {
 
-        // Create a const to store the next move
-        const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
+      const zombieInterval = setInterval(() => {
 
-        // Remove the class first
-        selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
+        zombies.forEach((zombie) => {
 
-        // if MJ Encounter
-        if (zombie.position === michael.position && !fullMoon) {
-          selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-          removeMichael()
-          clearInterval(zombieInterval)
-          if (lives >= 1) {
-            lives--
-            console.log(lives)
-            displayLives[lives].setAttribute('src', 'images/lives-lost.png')
-            setTimeout(() => {
-              removeAllZombies()
-            }, 1000)
-            setTimeout(() => {
-              michaelToStartPosition()
-              zombiesToStartPosition()
-            }, 1000)
-            playGame()
+          // * Check is there are still any dots or moon on the board
+          // * If not game is won
+          gameWon()
+
+          // * Create a const to store the next move
+          const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
+
+          // * Remove the zombie class at the start of each loop
+          selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
+
+          // * What happens if Zombies encounter Michael
+          if (zombie.position === michael.position) {
+            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+            removeMichael('mj')
+            clearInterval(zombieInterval)
+            if (lives > 0) {
+              lives--
+              displayLives[lives].setAttribute('src', 'images/lives-lost.png')
+              setTimeout(() => {
+                removeAllZombies()
+              }, 1000)
+              setTimeout(() => {
+                michaelToStartPosition()
+                zombiesToStartPosition()
+              }, 1000)
+              playGame()
+            } else {
+              gameOver()
+            }
+            // * How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
+          } else if (zombie.position === cellsObject.tunnelright) {
+            if (randomDirection === 1) {
+              zombie.position = cellsObject.tunnelleft
+              selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie')
+            } else {
+              zombie.position--
+              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+            }
+          } else if (zombie.position === cellsObject.tunnelleft) {
+            if (randomDirection === -1) {
+              zombie.position = cellsObject.tunnelright
+              selectCellId(cellsObject.tunnelright).classList.add(zombie.charName, 'zombie')
+            } else {
+              zombie.position++
+              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+            }
+          } else if (selectCellId(zombie.position + randomDirection).classList.contains('stone')) {
+            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
           } else {
-            grid.style.display = 'none'
-            displayResult.style.display = 'flex'
-            displayResultTitle.innerHTML = 'Game Over !'
-            displayFinalScore.innerHTML = `You scored ${points} points`
-          }
-
-          // else if = fullMoon
-
-
-          // else if no encounter
-        } else if (zombie.position === cellsObject.tunnelright) {
-          if (randomDirection === 1) {
-            zombie.position = cellsObject.tunnelleft
-            selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie')
-          } else {
-            zombie.position--
+            zombie.position += randomDirection
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
           }
-        } else if (zombie.position === cellsObject.tunnelleft) {
-          if (randomDirection === -1) {
-            zombie.position = cellsObject.tunnelright
-            selectCellId(cellsObject.tunnelright).classList.add(zombie.charName, 'zombie')
-          } else {
-            zombie.position++
-            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-          }
-        } else if (selectCellId(zombie.position + randomDirection).classList.contains('stone')) {
-          selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-        } else {
-          zombie.position += randomDirection
-          selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-        }
 
-      })
+        })
 
-    }, 300)
+      }, 300)
 
-  }, 1000)
-
+    }, 1000)
+    // ! else if fullmoon is true
+  }
 }
 playGame()
-
 

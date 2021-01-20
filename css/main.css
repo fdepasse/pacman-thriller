@@ -38,9 +38,10 @@ nav {
   box-shadow: 0 0 5px white;
 }
 
-#logo{
+#logo {
   width: 50%;
   padding-bottom: 15%;
+  /* width: 20%; */
 }
 
 #life-bar {
@@ -88,7 +89,11 @@ nav {
   width: 700px;
   height: 700px;
   text-align: center;
- }
+}
+
+#display-result h2 {
+  font-size: 40px;
+}
 
 #display-result img {
   height: 300px;
@@ -184,4 +189,23 @@ nav {
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
+}
+
+.zombie-scarred {
+animation: shake 0.5s;
+animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
