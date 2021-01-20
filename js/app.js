@@ -53,6 +53,9 @@ giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 //   })
 // })
 
+// ! AUDIO
+const audioPlayer = document.querySelector('audio')
+
 
 //  ! CREATING THE CHARACTERS
 
@@ -456,9 +459,13 @@ function playGame() {
 
     }, 300)
 
-  }, 1000)
+  }, 4000)
 }
 
-document.querySelector('#start').addEventListener('click', () => playGame())
+document.querySelector('#start').addEventListener('click', () => {
+  audioPlayer.src = 'sounds/intro.mov'
+  audioPlayer.play()
+  playGame()
+})
 document.querySelector('#start').addEventListener('click', () => michaelMoves('mj'))
 document.querySelector('#reset').addEventListener('click', () => location.reload())
