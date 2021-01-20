@@ -81,6 +81,7 @@ zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
 
 // ? Full Moon Mode
 let fullMoon = false
+const logo = document.querySelector('#logo')
 
 // ? Score and Result
 let points = 0
@@ -124,7 +125,7 @@ function gameOver() {
   displayResultTitle.innerHTML = 'Game Over'
   displayResultImage.setAttribute('src', 'images/mj-zombie.png')
   displayResultImage.setAttribute('alt', 'Zombie Michael Jackson')
-  displayFinalScore.innerHTML = `You scored ${points} pointsClick Reset Game to play again`
+  displayFinalScore.innerHTML = `You scored ${points} points`
 }
 
 
@@ -151,11 +152,9 @@ function popCornMode() {
     return setTimeout(() => {
       selectCellId(popCornPosition).classList.remove('pop-corn')
       popCornTime = 0
-    }, 5000)
+    }, 10000)
   }
 }
-
-
 
 
 // ! GAMEPLAY
@@ -182,6 +181,8 @@ function removeMichael(nameOfClass) {
 // let upInterval
 
 // * Michael moves with arrow keys are pressed
+let michaelStatus = 'mj'
+
 function michaelMoves(nameOfClass) {
 
   document.addEventListener('keyup', (event) => {
@@ -217,7 +218,6 @@ function michaelMoves(nameOfClass) {
       //   clearInterval(downInterval)
       //   clearInterval(upInterval)
     }
-
     if (keyPressed === 'ArrowLeft') {
       // leftInterval = setInterval(() => {
       selectCellId(michael.position).classList.remove(nameOfClass)
@@ -304,6 +304,7 @@ function michaelMoves(nameOfClass) {
     }
   })
 }
+// michaelMoves('mj')
 
 
 // ? ZOMBIES ON THE GRID
@@ -327,9 +328,6 @@ function removeAllZombies() {
 
 // ? GAMEPLAY FUNCTION WITH ZOMBIE BEHAVIOUR
 
-
-
-
 function playGame() {
 
   // * Storing all possible directions for the Zombies
@@ -340,23 +338,22 @@ function playGame() {
 
     const zombieInterval = setInterval(() => {
 
+      // * Make the pop corn appear if there number of points is reached
       popCornMode()
+
+      // * Check is there are still any dots or moon on the board
+      // * If not game is won
+      gameWon()
 
       zombies.forEach((zombie) => {
 
-        gameWon()
+        // * Create a const to store the next move
+        const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
+
+        // * Remove the zombie class at the start of each loop
+        selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie', 'zombie-scared')
 
         if (fullMoon === false) {
-          // * Check is there are still any dots or moon on the board
-          // * If not game is won
-
-
-          // * Create a const to store the next move
-          const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
-
-          // * Remove the zombie class at the start of each loop
-          selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie')
-
           // * What happens if Zombies encounter Michael
           if (zombie.position === michael.position) {
             removeMichael('mj')
@@ -399,6 +396,48 @@ function playGame() {
             zombie.position += randomDirection
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
           }
+        } if (fullMoon === true) {
+          removeMichael('mj')
+          selectCellId(michael.position).classList.add('mj-werewolf')
+          selectCellId(zombie.position).classList.add('zombie-scared')
+          logo.setAttribute('src', 'images/full-moon.png')
+          logo.setAttribute('alt', 'Full Moon')
+          logo.style.width = '20%'
+
+          // * What happens if Zombies encounter Michael Werewolf
+          if (zombie.position === michael.position) {
+            selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie', 'zombie-scared')
+            selectCellId(michael.position).classList.add('mj-werewolf')
+            selectCellId(zombie.startPosition).classList.add('zombie-hand')
+            points += 200
+            setTimeout(() => {
+              selectCellId(zombie.startPosition).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+              playGame()
+            }, 1000)
+
+            // * How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
+          } else if (zombie.position === cellsObject.tunnelright) {
+            if (randomDirection === 1) {
+              zombie.position = cellsObject.tunnelleft
+              selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+            } else {
+              zombie.position--
+              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+            }
+          } else if (zombie.position === cellsObject.tunnelleft) {
+            if (randomDirection === -1) {
+              zombie.position = cellsObject.tunnelright
+              selectCellId(cellsObject.tunnelright).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+            } else {
+              zombie.position++
+              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+            }
+          } else if (selectCellId(zombie.position + randomDirection).classList.contains('stone')) {
+            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+          } else {
+            zombie.position += randomDirection
+            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie', 'zombie-scared')
+          }
         }
       })
 
@@ -411,6 +450,7 @@ function playGame() {
   }, 1000)
   // ! else if fullmoon is true
 }
+// playGame()
 
 document.querySelector('#start').addEventListener('click', () => playGame())
 document.querySelector('#start').addEventListener('click', () => michaelMoves('mj'))

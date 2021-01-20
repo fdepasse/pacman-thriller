@@ -198,7 +198,7 @@ nav {
   background-position-y: center;
 }
 
-.zombie-scarred {
+.zombie-scared {
   animation: shake 0.5s;
   animation-iteration-count: infinite;
 }
