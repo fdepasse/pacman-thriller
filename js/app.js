@@ -124,7 +124,7 @@ function gameOver() {
   displayResultTitle.innerHTML = 'Game Over'
   displayResultImage.setAttribute('src', 'images/mj-zombie.png')
   displayResultImage.setAttribute('alt', 'Zombie Michael Jackson')
-  displayFinalScore.innerHTML = `You scored ${points} points`
+  displayFinalScore.innerHTML = `You scored ${points} pointsClick Reset Game to play again`
 }
 
 
@@ -304,8 +304,6 @@ function michaelMoves(nameOfClass) {
     }
   })
 }
-michaelMoves('mj')
-
 
 
 // ? ZOMBIES ON THE GRID
@@ -327,20 +325,17 @@ function removeAllZombies() {
 }
 
 
-
 // ? GAMEPLAY FUNCTION WITH ZOMBIE BEHAVIOUR
 
 
-function playGame() {
 
+
+function playGame() {
 
   // * Storing all possible directions for the Zombies
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
   // * Timeout to start the game after a couple of seconds
-
-
-
   setTimeout(() => {
 
     const zombieInterval = setInterval(() => {
@@ -348,8 +343,8 @@ function playGame() {
       popCornMode()
 
       zombies.forEach((zombie) => {
-        gameWon()
 
+        gameWon()
 
         if (fullMoon === false) {
           // * Check is there are still any dots or moon on the board
@@ -417,6 +412,6 @@ function playGame() {
   // ! else if fullmoon is true
 }
 
-playGame()
-
-
+document.querySelector('#start').addEventListener('click', () => playGame())
+document.querySelector('#start').addEventListener('click', () => michaelMoves('mj'))
+document.querySelector('#reset').addEventListener('click', () => location.reload())
