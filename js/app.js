@@ -215,6 +215,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+        } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
+          michael.position++
+          selectCellId(michael.position).classList.add(michael.status)
+          selectCellId(michael.position).classList.remove('pop-corn')
+          points += 100
+          displayScore.innerHTML = points
         } else {
           michael.position++
           selectCellId(michael.position).classList.add(michael.status)
@@ -243,6 +249,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+        } else if (selectCellId(michael.position - 1).classList.contains('pop-corn')) {
+          michael.position--
+          selectCellId(michael.position).classList.add(michael.status)
+          selectCellId(michael.position).classList.remove('pop-corn')
+          points += 100
+          displayScore.innerHTML = points
         } else {
           michael.position--
           selectCellId(michael.position).classList.add(michael.status)
@@ -268,6 +280,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+        } else if (selectCellId(michael.position - gridWidth).classList.contains('pop-corn')) {
+          michael.position -= gridWidth
+          selectCellId(michael.position).classList.add(michael.status)
+          selectCellId(michael.position).classList.remove('pop-corn')
+          points += 100
+          displayScore.innerHTML = points
         } else {
           michael.position -= gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -293,6 +311,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+        } else if (selectCellId(michael.position + gridWidth).classList.contains('pop-corn')) {
+          michael.position += gridWidth
+          selectCellId(michael.position).classList.add(michael.status)
+          selectCellId(michael.position).classList.remove('pop-corn')
+          points += 100
+          displayScore.innerHTML = points
         } else {
           michael.position += gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -354,8 +378,8 @@ function playGame() {
         if (fullMoon === false) {
           // * What happens if Zombies encounter Michael
           if (zombie.position === michael.position) {
-            removeMichael()
             clearInterval(gameInterval)
+            removeMichael()
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
             if (lives > 0) {
               lives--
@@ -407,13 +431,15 @@ function playGame() {
           // * What happens if Zombies encounter Michael Werewolf
           if (zombie.position === michael.position) {
             selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie-scared')
-            // selectCellId(michael.position).classList.add(michael.status)
-            selectCellId(zombie.startPosition).classList.add('zombie-hand')
+            zombie.position = zombie.startPosition
+            selectCellId(zombie.position).classList.add('zombie-hand')
             points += 200
+            displayScore.innerHTML = points
             setTimeout(() => {
-              selectCellId(zombie.startPosition).classList.add(zombie.charName, 'zombie-scared')
-              playGame()
-            }, 1000)
+              selectCellId(zombie.position).classList.remove('zombie-hand')
+              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie-scared')
+            }, 5000)
+            playGame()
 
             // * How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
           } else if (zombie.position === cellsObject.tunnelright) {
@@ -446,7 +472,7 @@ function playGame() {
             logo.setAttribute('src', 'images/thriller-logo.png')
             logo.setAttribute('alt', 'Thriller Logo')
             logo.style.width = '50%'
-          }, 15000)
+          }, 30000)
         }
       })
 
