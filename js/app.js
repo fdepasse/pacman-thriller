@@ -390,7 +390,6 @@ function michaelMoves() {
   })
 }
 
-
 // ? Zombies
 // * Zombies appear on the grid
 function zombiesToStartPosition() {
@@ -424,7 +423,6 @@ function playGame() {
   setTimeout(() => {
 
     const gameInterval = setInterval(() => {
-
       // Make the pop corn appear if the number of points is reached
       popCornMode()
       // Check is there are still any dots or moon on the board
