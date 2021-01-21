@@ -1,5 +1,4 @@
 // ! SETTING THE GRID UP
-
 const grid = document.querySelector('#grid')
 const gridWidth = 18
 const cellsObject = {
@@ -15,6 +14,7 @@ function selectCellId(cellId) {
   return document.getElementById(cellId)
 }
 
+// ? Array to store all cells
 const allCells = []
 
 // ? Generates the empty grid
@@ -27,8 +27,6 @@ for (let i = 0; i < gridWidth ** 2; i++) {
   newCell.style.height = `${100 / gridWidth}%`
   allCells.push(newCell)
 }
-
-console.log(allCells)
 
 // ? Set classes to each cell
 // * Stores, dots and moons in arrays of the cellsObject
@@ -46,7 +44,7 @@ function giveClasstoTunnel(cell, className) {
 giveClasstoTunnel(cellsObject.tunnelright, 'tunnel-right')
 giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 
-// Tool to draw ther grid in the browser then copy and pasting the array frpm the console
+// Tool to draw the grid in the browser then copy and pasting the array frpm the console
 // const cells = document.querySelectorAll('#grid div')
 // cells.forEach((div) => {
 //   div.addEventListener('click', () => {
@@ -57,9 +55,7 @@ giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 // })
 
 
-
 //  ! CREATING THE CHARACTERS
-
 // * Character Class
 class Character {
   constructor(charName, startPosition) {
@@ -76,10 +72,10 @@ class Hero extends Character {
   }
 }
 
-// * MJ
+// * Creating MJ
 const michael = new Hero('michael', 243)
 
-// * Zombies
+// * Creating Zombies
 const zombies = []
 const zombMexican = new Character('mexican-zombie', 115)
 const zombOffice = new Character('office-zombie', 118)
@@ -87,8 +83,8 @@ const zombNews = new Character('news-zombie', 169)
 const zombPirate = new Character('pirate-zombie', 172)
 zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
 
-// ! GAME VARIABLES AND FUNCTIONS
 
+// ! GAME VARIABLES AND FUNCTIONS
 // ? Full Moon Mode
 let fullMoon = false
 const logo = document.querySelector('#logo')
@@ -96,7 +92,7 @@ const logo = document.querySelector('#logo')
 // ? Score and Result
 let points = 0
 
-// * Display the score during the game
+//  * Display the score during the game
 const displayScore = document.querySelector('#points')
 displayScore.innerHTML = points
 
@@ -106,7 +102,8 @@ const displayResultTitle = document.querySelector('#result-title')
 const displayResultImage = document.querySelector('#result-image')
 const displayFinalScore = document.querySelector('#result-score')
 
-// * Winning and Losing the game
+
+// * Winning or Losing the game 
 const dotsAndMoonsArray = cellsObject.dots.concat(cellsObject.moons)
 
 // Check is there are still some dots and moons to take
@@ -128,7 +125,7 @@ function gameWon() {
   }
 }
 
-// Display the result when the game is lost
+// Display the result when the game is lost and play a sound
 function gameOver() {
   audioPlayer.src = 'sounds/game-over.m4a'
   audioPlayer.loop = ''
@@ -141,7 +138,6 @@ function gameOver() {
   displayFinalScore.innerHTML = `You scored ${points} points`
 
 }
-
 
 // ? Lives
 let lives = 3
@@ -170,30 +166,27 @@ function popCornMode() {
   }
 }
 
+
 // ! AUDIO
 const audioPlayer = document.querySelector('audio')
 
 
 // ! GAMEPLAY
 
-// ? MICHAEL MOVEMENTS
-
+// ? Michael Movements
+// * Michael appears on the grid
 function michaelToStartPosition() {
   michael.position = michael.startPosition
   selectCellId(michael.position).classList.add(michael.status)
 }
 
-// * Useful to remove Michael from the grid when needed
+// * Useful to remove Michael from his current position
 function removeMichael() {
   selectCellId(michael.position).classList.remove(michael.status)
 }
 
-// * Set the directoions variables for intervals
-let michaelInterval
-
-// * Michael appears on the grid
-
 // * Michael moves with arrow keys are pressed
+let michaelInterval
 
 function michaelMoves() {
 
@@ -226,6 +219,15 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
+          setTimeout(() => {
+            removeMichael()
+            fullMoon = false
+            michael.status = 'mj'
+            selectCellId(michael.position).classList.add(michael.status)
+            logo.setAttribute('src', 'images/thriller-logo.png')
+            logo.setAttribute('alt', 'Thriller Logo')
+            logo.style.width = '50%'
+          }, 20000)
         } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
           michael.position++
           selectCellId(michael.position).classList.add(michael.status)
@@ -264,6 +266,15 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
+          setTimeout(() => {
+            removeMichael()
+            fullMoon = false
+            michael.status = 'mj'
+            selectCellId(michael.position).classList.add(michael.status)
+            logo.setAttribute('src', 'images/thriller-logo.png')
+            logo.setAttribute('alt', 'Thriller Logo')
+            logo.style.width = '50%'
+          }, 20000)
         } else if (selectCellId(michael.position - 1).classList.contains('pop-corn')) {
           michael.position--
           selectCellId(michael.position).classList.add(michael.status)
@@ -299,6 +310,15 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
+          setTimeout(() => {
+            removeMichael()
+            fullMoon = false
+            michael.status = 'mj'
+            selectCellId(michael.position).classList.add(michael.status)
+            logo.setAttribute('src', 'images/thriller-logo.png')
+            logo.setAttribute('alt', 'Thriller Logo')
+            logo.style.width = '50%'
+          }, 20000)
         } else if (selectCellId(michael.position - gridWidth).classList.contains('pop-corn')) {
           michael.position -= gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -334,6 +354,15 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
+          setTimeout(() => {
+            removeMichael()
+            fullMoon = false
+            michael.status = 'mj'
+            selectCellId(michael.position).classList.add(michael.status)
+            logo.setAttribute('src', 'images/thriller-logo.png')
+            logo.setAttribute('alt', 'Thriller Logo')
+            logo.style.width = '50%'
+          }, 20000)
         } else if (selectCellId(michael.position + gridWidth).classList.contains('pop-corn')) {
           michael.position += gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -350,8 +379,7 @@ function michaelMoves() {
 }
 
 
-// ? ZOMBIES ON THE GRID
-
+// ? Zombies
 // * Zombies appear on the grid
 function zombiesToStartPosition() {
   return zombies.forEach((zombie) => {
@@ -360,7 +388,7 @@ function zombiesToStartPosition() {
   })
 }
 
-// * Function to clear all zommbies from the grid
+// * Function to clear all zombies from the grid
 function removeAllZombies() {
   return zombies.forEach((zombie) => {
     selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie', 'zombie-scared')
@@ -368,8 +396,7 @@ function removeAllZombies() {
 }
 
 
-// ? GAMEPLAY FUNCTION WITH ZOMBIE BEHAVIOUR
-
+// ? Gameplay function with zombies on the grid
 function playGame() {
 
   setTimeout(() => {
@@ -378,32 +405,28 @@ function playGame() {
     audioPlayer.play()
   }, 1130)
 
-  // * Storing all possible directions for the Zombies
+  // Storing all possible directions for the Zombies
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
-  // * Timeout to start the game after a couple of seconds
+  // Timeout to start the game after a couple of seconds
   setTimeout(() => {
 
     const gameInterval = setInterval(() => {
 
-      // * Make the pop corn appear if there number of points is reached
+      // Make the pop corn appear if the number of points is reached
       popCornMode()
-
-      // * Check is there are still any dots or moon on the board
-      // * If not game is won
+      // Check is there are still any dots or moon on the board
+      // If not game is won
       gameWon()
-
-
+      // Run the below for each zombie in the array of objects 'zombies'
       zombies.forEach((zombie) => {
-
-        // * Create a const to store the next move
+        // Create a const to store the next move
         const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
-
-        // * Remove the zombie class at the start of each loop
+        // Remove the zombie class at the start of each loop
         selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie', 'zombie-scared')
-
+        // What happens in normal mode
         if (fullMoon === false) {
-          // * What happens if Zombies encounter Michael
+          // What happens if Zombies encounter Michael
           if (zombie.position === michael.position) {
             clearInterval(gameInterval)
             removeMichael()
@@ -422,10 +445,10 @@ function playGame() {
                 zombiesToStartPosition()
               }, 1000)
               playGame()
-            } else {
+            } else if (lives === 0) {
               gameOver()
             }
-            // * How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
+            //  How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
           } else if (zombie.position === cellsObject.tunnelright) {
             if (randomDirection === 1) {
               zombie.position = cellsObject.tunnelleft
@@ -448,13 +471,14 @@ function playGame() {
             zombie.position += randomDirection
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
           }
+          // What happens in full moon mode
         } if (fullMoon === true) {
-          // * Transformation michael and page
+          //  Transformation michael and page
           removeMichael()
           michael.status = 'mj-werewolf'
           selectCellId(michael.position).classList.add(michael.status)
 
-          // * What happens if Zombies encounter Michael Werewolf
+          //  What happens if Zombies encounter Michael Werewolf
           if (zombie.position === michael.position) {
             selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie-scared')
             zombie.position = zombie.startPosition
@@ -463,8 +487,7 @@ function playGame() {
             setTimeout(() => {
               selectCellId(zombie.position).classList.add(zombie.charName, 'zombie-scared')
             }, 5000)
-
-            // * How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
+            //  How the Zombies navigate the grid
           } else if (zombie.position === cellsObject.tunnelright) {
             if (randomDirection === 1) {
               zombie.position = cellsObject.tunnelleft
@@ -487,18 +510,9 @@ function playGame() {
             zombie.position += randomDirection
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie-scared')
           }
-          setTimeout(() => {
-            removeMichael()
-            fullMoon = false
-            michael.status = 'mj'
-            selectCellId(michael.position).classList.add(michael.status)
-            logo.setAttribute('src', 'images/thriller-logo.png')
-            logo.setAttribute('alt', 'Thriller Logo')
-            logo.style.width = '50%'
-          }, 20000)
         }
       })
-
+      // Check the points and if they reach 250 or 750 adds 1 to PopCornTime which will fire the popCornMode function
       if (points === 250 || points === 750) {
         popCornTime++
       }
@@ -508,6 +522,10 @@ function playGame() {
   }, 2000)
 }
 
+// ! EVENT LISTENERS
+// Click on Start Button: play intro music, make the elements and character appear on the grid
+// Allows player to start moving Michael
+// Play the game and the zombies start moving
 document.querySelector('#start').addEventListener('click', () => {
   audioPlayer.src = 'sounds/intro.m4a'
   audioPlayer.play()
@@ -522,4 +540,5 @@ document.querySelector('#start').addEventListener('click', () => {
   }, 3000)
 })
 document.querySelector('#start').addEventListener('click', () => michaelMoves())
+// Reset Game buttom will refresh the page and start the game fron scratch
 document.querySelector('#reset').addEventListener('click', () => location.reload())
