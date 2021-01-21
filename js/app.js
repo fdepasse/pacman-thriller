@@ -15,6 +15,8 @@ function selectCellId(cellId) {
   return document.getElementById(cellId)
 }
 
+const allCells = []
+
 // ? Generates the empty grid
 for (let i = 0; i < gridWidth ** 2; i++) {
   const newCell = document.createElement('div')
@@ -23,7 +25,10 @@ for (let i = 0; i < gridWidth ** 2; i++) {
   newCell.id = i
   newCell.style.width = `${100 / gridWidth}%`
   newCell.style.height = `${100 / gridWidth}%`
+  allCells.push(newCell)
 }
+
+console.log(allCells)
 
 // ? Set classes to each cell
 // * Stores, dots and moons in arrays of the cellsObject
@@ -231,7 +236,7 @@ function michaelMoves() {
           michael.position++
           selectCellId(michael.position).classList.add(michael.status)
         }
-      }, 500)
+      }, 300)
     }
     if (keyPressed === 'ArrowLeft') {
       clearInterval(michaelInterval)
@@ -269,7 +274,7 @@ function michaelMoves() {
           michael.position--
           selectCellId(michael.position).classList.add(michael.status)
         }
-      }, 500)
+      }, 300)
     }
     if (keyPressed === 'ArrowUp') {
       clearInterval(michaelInterval)
@@ -304,7 +309,7 @@ function michaelMoves() {
           michael.position -= gridWidth
           selectCellId(michael.position).classList.add(michael.status)
         }
-      }, 500)
+      }, 300)
     }
     if (keyPressed === 'ArrowDown') {
       clearInterval(michaelInterval)
@@ -339,7 +344,7 @@ function michaelMoves() {
           michael.position += gridWidth
           selectCellId(michael.position).classList.add(michael.status)
         }
-      }, 500)
+      }, 300)
     }
   })
 }
@@ -410,6 +415,9 @@ function playGame() {
                 removeAllZombies()
               }, 1000)
               setTimeout(() => {
+                allCells.forEach((cell) => {
+                  cell.classList.remove(michael.status)
+                })
                 michaelToStartPosition()
                 zombiesToStartPosition()
               }, 1000)
