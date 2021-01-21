@@ -126,6 +126,7 @@ function gameWon() {
 // Display the result when the game is lost
 function gameOver() {
   audioPlayer.src = 'sounds/game-over.m4a'
+  audioPlayer.loop = ''
   audioPlayer.play()
   grid.style.display = 'none'
   displayResult.style.display = 'flex'
@@ -166,7 +167,6 @@ function popCornMode() {
 
 // ! AUDIO
 const audioPlayer = document.querySelector('audio')
-
 
 
 // ! GAMEPLAY
@@ -221,8 +221,6 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
-          audioPlayer.src = 'sounds/werewolf.m4a'
-          audioPlayer.play()
         } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
           michael.position++
           selectCellId(michael.position).classList.add(michael.status)
@@ -261,8 +259,6 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
-          audioPlayer.src = 'sounds/werewolf.m4a'
-          audioPlayer.play()
         } else if (selectCellId(michael.position - 1).classList.contains('pop-corn')) {
           michael.position--
           selectCellId(michael.position).classList.add(michael.status)
@@ -298,8 +294,6 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
-          audioPlayer.src = 'sounds/werewolf.m4a'
-          audioPlayer.play()
         } else if (selectCellId(michael.position - gridWidth).classList.contains('pop-corn')) {
           michael.position -= gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -335,8 +329,6 @@ function michaelMoves() {
           logo.setAttribute('alt', 'Full Moon')
           logo.style.width = '20%'
           logo.style.padding = '0 0 7.5% 0'
-          audioPlayer.src = 'sounds/werewolf.m4a'
-          audioPlayer.play()
         } else if (selectCellId(michael.position + gridWidth).classList.contains('pop-corn')) {
           michael.position += gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -377,8 +369,9 @@ function playGame() {
 
   setTimeout(() => {
     audioPlayer.src = 'sounds/beat.m4a'
+    audioPlayer.loop = 'loop'
     audioPlayer.play()
-  },1130)
+  }, 1130)
 
   // * Storing all possible directions for the Zombies
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
@@ -453,19 +446,15 @@ function playGame() {
           michael.status = 'mj-werewolf'
           selectCellId(michael.position).classList.add(michael.status)
 
-
           // * What happens if Zombies encounter Michael Werewolf
           if (zombie.position === michael.position) {
             selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie-scared')
             zombie.position = zombie.startPosition
-            selectCellId(zombie.position).classList.add('zombie-hand')
             points += 200
             displayScore.innerHTML = points
             setTimeout(() => {
-              selectCellId(zombie.position).classList.remove('zombie-hand')
               selectCellId(zombie.position).classList.add(zombie.charName, 'zombie-scared')
             }, 5000)
-            playGame()
 
             // * How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
           } else if (zombie.position === cellsObject.tunnelright) {
@@ -498,7 +487,7 @@ function playGame() {
             logo.setAttribute('src', 'images/thriller-logo.png')
             logo.setAttribute('alt', 'Thriller Logo')
             logo.style.width = '50%'
-          }, 30000)
+          }, 20000)
         }
       })
 
