@@ -114,8 +114,12 @@ function areDotOrMoonsLeft() {
 }
 
 // Display the result when the game is won
-function gameWon() {
+function gameWon(intervalName) {
   if (areDotOrMoonsLeft() === false) {
+    clearInterval(intervalName)
+    audioPlayer.src = 'sounds/game-won.m4a'
+    audioPlayer.loop = ''
+    audioPlayer.play()
     grid.style.display = 'none'
     displayResult.style.display = 'flex'
     displayResultTitle.innerHTML = 'Congratulations, you moonwalked this!'
@@ -214,20 +218,22 @@ function michaelMoves() {
           selectCellId(michael.position).classList.remove('moon')
           points += 50
           displayScore.innerHTML = points
-          fullMoon = true
-          logo.setAttribute('src', 'images/full-moon.png')
-          logo.setAttribute('alt', 'Full Moon')
-          logo.style.width = '20%'
-          logo.style.padding = '0 0 7.5% 0'
-          setTimeout(() => {
-            removeMichael()
-            fullMoon = false
-            michael.status = 'mj'
-            selectCellId(michael.position).classList.add(michael.status)
-            logo.setAttribute('src', 'images/thriller-logo.png')
-            logo.setAttribute('alt', 'Thriller Logo')
-            logo.style.width = '50%'
-          }, 20000)
+          if (fullMoon === false) {
+            fullMoon = true
+            logo.setAttribute('src', 'images/full-moon.png')
+            logo.setAttribute('alt', 'Full Moon')
+            logo.style.width = '20%'
+            logo.style.padding = '0 0 7.5% 0'
+            setTimeout(() => {
+              removeMichael()
+              fullMoon = false
+              michael.status = 'mj'
+              selectCellId(michael.position).classList.add(michael.status)
+              logo.setAttribute('src', 'images/thriller-logo.png')
+              logo.setAttribute('alt', 'Thriller Logo')
+              logo.style.width = '50%'
+            }, 20000)
+          }
         } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
           michael.position++
           selectCellId(michael.position).classList.add(michael.status)
@@ -261,20 +267,22 @@ function michaelMoves() {
           selectCellId(michael.position).classList.remove('moon')
           points += 50
           displayScore.innerHTML = points
-          fullMoon = true
-          logo.setAttribute('src', 'images/full-moon.png')
-          logo.setAttribute('alt', 'Full Moon')
-          logo.style.width = '20%'
-          logo.style.padding = '0 0 7.5% 0'
-          setTimeout(() => {
-            removeMichael()
-            fullMoon = false
-            michael.status = 'mj'
-            selectCellId(michael.position).classList.add(michael.status)
-            logo.setAttribute('src', 'images/thriller-logo.png')
-            logo.setAttribute('alt', 'Thriller Logo')
-            logo.style.width = '50%'
-          }, 20000)
+          if (fullMoon === false) {
+            fullMoon = true
+            logo.setAttribute('src', 'images/full-moon.png')
+            logo.setAttribute('alt', 'Full Moon')
+            logo.style.width = '20%'
+            logo.style.padding = '0 0 7.5% 0'
+            setTimeout(() => {
+              removeMichael()
+              fullMoon = false
+              michael.status = 'mj'
+              selectCellId(michael.position).classList.add(michael.status)
+              logo.setAttribute('src', 'images/thriller-logo.png')
+              logo.setAttribute('alt', 'Thriller Logo')
+              logo.style.width = '50%'
+            }, 20000)
+          }
         } else if (selectCellId(michael.position - 1).classList.contains('pop-corn')) {
           michael.position--
           selectCellId(michael.position).classList.add(michael.status)
@@ -305,20 +313,22 @@ function michaelMoves() {
           selectCellId(michael.position).classList.remove('moon')
           points += 50
           displayScore.innerHTML = points
-          fullMoon = true
-          logo.setAttribute('src', 'images/full-moon.png')
-          logo.setAttribute('alt', 'Full Moon')
-          logo.style.width = '20%'
-          logo.style.padding = '0 0 7.5% 0'
-          setTimeout(() => {
-            removeMichael()
-            fullMoon = false
-            michael.status = 'mj'
-            selectCellId(michael.position).classList.add(michael.status)
-            logo.setAttribute('src', 'images/thriller-logo.png')
-            logo.setAttribute('alt', 'Thriller Logo')
-            logo.style.width = '50%'
-          }, 20000)
+          if (fullMoon === false) {
+            fullMoon = true
+            logo.setAttribute('src', 'images/full-moon.png')
+            logo.setAttribute('alt', 'Full Moon')
+            logo.style.width = '20%'
+            logo.style.padding = '0 0 7.5% 0'
+            setTimeout(() => {
+              removeMichael()
+              fullMoon = false
+              michael.status = 'mj'
+              selectCellId(michael.position).classList.add(michael.status)
+              logo.setAttribute('src', 'images/thriller-logo.png')
+              logo.setAttribute('alt', 'Thriller Logo')
+              logo.style.width = '50%'
+            }, 20000)
+          }
         } else if (selectCellId(michael.position - gridWidth).classList.contains('pop-corn')) {
           michael.position -= gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -349,20 +359,22 @@ function michaelMoves() {
           selectCellId(michael.position).classList.remove('moon')
           points += 50
           displayScore.innerHTML = points
-          fullMoon = true
-          logo.setAttribute('src', 'images/full-moon.png')
-          logo.setAttribute('alt', 'Full Moon')
-          logo.style.width = '20%'
-          logo.style.padding = '0 0 7.5% 0'
-          setTimeout(() => {
-            removeMichael()
-            fullMoon = false
-            michael.status = 'mj'
-            selectCellId(michael.position).classList.add(michael.status)
-            logo.setAttribute('src', 'images/thriller-logo.png')
-            logo.setAttribute('alt', 'Thriller Logo')
-            logo.style.width = '50%'
-          }, 20000)
+          if (fullMoon === false) {
+            fullMoon = true
+            logo.setAttribute('src', 'images/full-moon.png')
+            logo.setAttribute('alt', 'Full Moon')
+            logo.style.width = '20%'
+            logo.style.padding = '0 0 7.5% 0'
+            setTimeout(() => {
+              removeMichael()
+              fullMoon = false
+              michael.status = 'mj'
+              selectCellId(michael.position).classList.add(michael.status)
+              logo.setAttribute('src', 'images/thriller-logo.png')
+              logo.setAttribute('alt', 'Thriller Logo')
+              logo.style.width = '50%'
+            }, 20000)
+          }
         } else if (selectCellId(michael.position + gridWidth).classList.contains('pop-corn')) {
           michael.position += gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -417,7 +429,7 @@ function playGame() {
       popCornMode()
       // Check is there are still any dots or moon on the board
       // If not game is won
-      gameWon()
+      gameWon(gameInterval)
       // Run the below for each zombie in the array of objects 'zombies'
       zombies.forEach((zombie) => {
         // Create a const to store the next move
