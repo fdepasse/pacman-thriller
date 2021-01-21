@@ -33,8 +33,6 @@ function giveClassToCells(array, className) {
   })
 }
 giveClassToCells(cellsObject.stones, 'stone')
-giveClassToCells(cellsObject.dots, 'dot')
-giveClassToCells(cellsObject.moons, 'moon')
 
 // * Tunnels as a property of cellsObject
 function giveClasstoTunnel(cell, className) {
@@ -53,8 +51,6 @@ giveClasstoTunnel(cellsObject.tunnelleft, 'tunnel-left')
 //   })
 // })
 
-// ! AUDIO
-const audioPlayer = document.querySelector('audio')
 
 
 //  ! CREATING THE CHARACTERS
@@ -129,12 +125,15 @@ function gameWon() {
 
 // Display the result when the game is lost
 function gameOver() {
+  audioPlayer.src = 'sounds/game-over.m4a'
+  audioPlayer.play()
   grid.style.display = 'none'
   displayResult.style.display = 'flex'
   displayResultTitle.innerHTML = 'Game Over'
   displayResultImage.setAttribute('src', 'images/mj-zombie.png')
   displayResultImage.setAttribute('alt', 'Zombie Michael Jackson')
   displayFinalScore.innerHTML = `You scored ${points} points`
+
 }
 
 
@@ -165,6 +164,10 @@ function popCornMode() {
   }
 }
 
+// ! AUDIO
+const audioPlayer = document.querySelector('audio')
+
+
 
 // ! GAMEPLAY
 
@@ -184,7 +187,6 @@ function removeMichael() {
 let michaelInterval
 
 // * Michael appears on the grid
-michaelToStartPosition()
 
 // * Michael moves with arrow keys are pressed
 
@@ -215,6 +217,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+          logo.setAttribute('src', 'images/full-moon.png')
+          logo.setAttribute('alt', 'Full Moon')
+          logo.style.width = '20%'
+          logo.style.padding = '0 0 7.5% 0'
+          audioPlayer.src = 'sounds/werewolf.m4a'
+          audioPlayer.play()
         } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
           michael.position++
           selectCellId(michael.position).classList.add(michael.status)
@@ -249,6 +257,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+          logo.setAttribute('src', 'images/full-moon.png')
+          logo.setAttribute('alt', 'Full Moon')
+          logo.style.width = '20%'
+          logo.style.padding = '0 0 7.5% 0'
+          audioPlayer.src = 'sounds/werewolf.m4a'
+          audioPlayer.play()
         } else if (selectCellId(michael.position - 1).classList.contains('pop-corn')) {
           michael.position--
           selectCellId(michael.position).classList.add(michael.status)
@@ -280,6 +294,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+          logo.setAttribute('src', 'images/full-moon.png')
+          logo.setAttribute('alt', 'Full Moon')
+          logo.style.width = '20%'
+          logo.style.padding = '0 0 7.5% 0'
+          audioPlayer.src = 'sounds/werewolf.m4a'
+          audioPlayer.play()
         } else if (selectCellId(michael.position - gridWidth).classList.contains('pop-corn')) {
           michael.position -= gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -311,6 +331,12 @@ function michaelMoves() {
           points += 50
           displayScore.innerHTML = points
           fullMoon = true
+          logo.setAttribute('src', 'images/full-moon.png')
+          logo.setAttribute('alt', 'Full Moon')
+          logo.style.width = '20%'
+          logo.style.padding = '0 0 7.5% 0'
+          audioPlayer.src = 'sounds/werewolf.m4a'
+          audioPlayer.play()
         } else if (selectCellId(michael.position + gridWidth).classList.contains('pop-corn')) {
           michael.position += gridWidth
           selectCellId(michael.position).classList.add(michael.status)
@@ -336,7 +362,6 @@ function zombiesToStartPosition() {
     selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
   })
 }
-zombiesToStartPosition()
 
 // * Function to clear all zommbies from the grid
 function removeAllZombies() {
@@ -347,17 +372,21 @@ function removeAllZombies() {
 
 
 // ? GAMEPLAY FUNCTION WITH ZOMBIE BEHAVIOUR
-let gameInterval
-
 
 function playGame() {
+
+  setTimeout(() => {
+    audioPlayer.src = 'sounds/beat.m4a'
+    audioPlayer.play()
+  },1130)
+
   // * Storing all possible directions for the Zombies
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
   // * Timeout to start the game after a couple of seconds
   setTimeout(() => {
 
-    gameInterval = setInterval(() => {
+    const gameInterval = setInterval(() => {
 
       // * Make the pop corn appear if there number of points is reached
       popCornMode()
@@ -423,10 +452,7 @@ function playGame() {
           removeMichael()
           michael.status = 'mj-werewolf'
           selectCellId(michael.position).classList.add(michael.status)
-          logo.setAttribute('src', 'images/full-moon.png')
-          logo.setAttribute('alt', 'Full Moon')
-          logo.style.width = '20%'
-          logo.style.padding = '0 0 7.5% 0'
+
 
           // * What happens if Zombies encounter Michael Werewolf
           if (zombie.position === michael.position) {
@@ -488,7 +514,15 @@ function playGame() {
 document.querySelector('#start').addEventListener('click', () => {
   audioPlayer.src = 'sounds/intro.m4a'
   audioPlayer.play()
-  playGame()
+  setTimeout(() => {
+    giveClassToCells(cellsObject.dots, 'dot')
+    giveClassToCells(cellsObject.moons, 'moon')
+  }, 2300)
+  setTimeout(() => {
+    zombiesToStartPosition()
+    michaelToStartPosition()
+    playGame()
+  }, 3000)
 })
 document.querySelector('#start').addEventListener('click', () => michaelMoves())
 document.querySelector('#reset').addEventListener('click', () => location.reload())
