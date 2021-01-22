@@ -152,26 +152,26 @@ const displayLives = Array.from(document.querySelectorAll('.one-life'))
 
 
 // ? Pop Corn Bonus
-// let popCornPosition
+let popCornPosition
 
-// function popCornRandomLocation() {
-//   const popCornPossibleLocations = [115, 116, 117, 118, 133, 136, 151, 154, 169, 170, 171, 172, 241, 242, 243, 244]
-//   const randomLocation = popCornPossibleLocations[Math.floor((Math.random() * popCornPossibleLocations.length))]
-//   return popCornPosition = randomLocation
-// }
+function popCornRandomLocation() {
+  const popCornPossibleLocations = [115, 116, 117, 118, 133, 136, 151, 154, 169, 170, 171, 172, 241, 242, 243, 244]
+  const randomLocation = popCornPossibleLocations[Math.floor((Math.random() * popCornPossibleLocations.length))]
+  return popCornPosition = randomLocation
+}
 
-// let popCornTime = 0
+let popCornTime = 0
 
-// function popCornMode() {
-//   if (popCornTime === 1) {
-//     popCornRandomLocation()
-//     selectCellId(popCornPosition).classList.add('pop-corn')
-//     return setTimeout(() => {
-//       selectCellId(popCornPosition).classList.remove('pop-corn')
-//       popCornTime = 0
-//     }, 10000)
-//   }
-// }
+function popCornMode() {
+  if (popCornTime === 1) {
+    popCornRandomLocation()
+    selectCellId(popCornPosition).classList.add('pop-corn')
+    return setTimeout(() => {
+      selectCellId(popCornPosition).classList.remove('pop-corn')
+      popCornTime = 0
+    }, 10000)
+  }
+}
 
 
 // ! AUDIO
@@ -235,7 +235,7 @@ function michaelMoves() {
               logo.setAttribute('src', 'images/thriller-logo.png')
               logo.setAttribute('alt', 'Thriller Logo')
               logo.style.width = '50%'
-            }, 15000)
+            }, 10000)
           }
         } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
           michael.position++
@@ -284,7 +284,7 @@ function michaelMoves() {
               logo.setAttribute('src', 'images/thriller-logo.png')
               logo.setAttribute('alt', 'Thriller Logo')
               logo.style.width = '50%'
-            }, 15000)
+            }, 10000)
           }
         } else if (selectCellId(michael.position - 1).classList.contains('pop-corn')) {
           michael.position--
@@ -330,7 +330,7 @@ function michaelMoves() {
               logo.setAttribute('src', 'images/thriller-logo.png')
               logo.setAttribute('alt', 'Thriller Logo')
               logo.style.width = '50%'
-            }, 15000)
+            }, 10000)
           }
         } else if (selectCellId(michael.position - gridWidth).classList.contains('pop-corn')) {
           michael.position -= gridWidth
@@ -376,7 +376,7 @@ function michaelMoves() {
               logo.setAttribute('src', 'images/thriller-logo.png')
               logo.setAttribute('alt', 'Thriller Logo')
               logo.style.width = '50%'
-            }, 15000)
+            }, 10000)
           }
         } else if (selectCellId(michael.position + gridWidth).classList.contains('pop-corn')) {
           michael.position += gridWidth
@@ -426,8 +426,6 @@ function playGame() {
   setTimeout(() => {
 
     const gameInterval = setInterval(() => {
-      // Make the pop corn appear if the number of points is reached
-      // popCornMode()
       // Check is there are still any dots or moon on the board
       // If not game is won
       gameWon(gameInterval)
@@ -525,15 +523,18 @@ function playGame() {
           }
         }
       })
-      // Check the points and if they reach 250 or 750 adds 1 to PopCornTime which will fire the popCornMode function
-      // if (points === 250 || points === 750) {
-      //   popCornTime++
-      // }
+      // Check the points and if they reach 400 or 800 adds 1 to PopCornTime which will fire the popCornMode function
+      if (points === 400 || points === 800) {
+        popCornTime++
+        popCornMode()
+      }
 
     }, 300)
 
   }, 2000)
 }
+
+
 
 // ! EVENT LISTENERS
 // Click on Start Button: play intro music, make the elements and character appear on the grid
