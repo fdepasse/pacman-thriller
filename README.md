@@ -9,7 +9,7 @@ Used a event listener to get the array I dev tools and copied it
 ![](README/B3A9E10F-C4A3-449A-AD3D-FC99E73F85A4.png)
 
 
-![](README/CCD15C9B-95BC-4825-9AD3-B491DAD277BB.png)
+![](B3A9E10F-C4A3-449A-AD3D-FC99E73F85A4.png)![](README/CCD15C9B-95BC-4825-9AD3-B491DAD277BB.png)
 
 ## Plan
 ### Friday
