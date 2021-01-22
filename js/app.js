@@ -143,7 +143,6 @@ function gameOver() {
   displayResultImage.setAttribute('src', 'images/mj-zombie.png')
   displayResultImage.setAttribute('alt', 'Zombie Michael Jackson')
   displayFinalScore.innerHTML = `You scored ${points} points`
-
 }
 
 // ? Lives
@@ -439,11 +438,13 @@ function playGame() {
         if (fullMoon === false) {
           // What happens if Zombies encounter Michael
           if (zombie.position === michael.position) {
+            console.log(lives)
             clearInterval(gameInterval)
             removeMichael()
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
             if (lives > 0) {
               lives--
+              console.log(lives)
               displayLives[lives].setAttribute('src', 'images/lives-lost.png')
               setTimeout(() => {
                 removeAllZombies()
@@ -456,7 +457,7 @@ function playGame() {
                 zombiesToStartPosition()
               }, 1000)
               playGame()
-            } else if (lives === 0) {
+            } else {
               gameOver()
             }
             //  How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
