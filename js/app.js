@@ -126,6 +126,9 @@ function gameWon(intervalName) {
     displayResultImage.setAttribute('src', 'images/mj-happy.png')
     displayResultImage.setAttribute('alt', 'Michael Jackson Happy')
     displayFinalScore.innerHTML = `You scored ${points} points`
+    logo.setAttribute('src', 'images/thriller-logo.png')
+    logo.setAttribute('alt', 'Thriller Logo')
+    logo.style.width = '50%'
   }
 }
 
