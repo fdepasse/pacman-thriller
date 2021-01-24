@@ -222,6 +222,9 @@ function michaelMoves() {
           displayScore.innerHTML = points
           if (fullMoon === false) {
             fullMoon = true
+            removeMichael()
+            michael.status = 'mj-werewolf'
+            selectCellId(michael.position).classList.add(michael.status)
             logo.setAttribute('src', 'images/full-moon.png')
             logo.setAttribute('alt', 'Full Moon')
             logo.style.width = '20%'
@@ -271,6 +274,9 @@ function michaelMoves() {
           displayScore.innerHTML = points
           if (fullMoon === false) {
             fullMoon = true
+            removeMichael()
+            michael.status = 'mj-werewolf'
+            selectCellId(michael.position).classList.add(michael.status)
             logo.setAttribute('src', 'images/full-moon.png')
             logo.setAttribute('alt', 'Full Moon')
             logo.style.width = '20%'
@@ -317,6 +323,9 @@ function michaelMoves() {
           displayScore.innerHTML = points
           if (fullMoon === false) {
             fullMoon = true
+            removeMichael()
+            michael.status = 'mj-werewolf'
+            selectCellId(michael.position).classList.add(michael.status)
             logo.setAttribute('src', 'images/full-moon.png')
             logo.setAttribute('alt', 'Full Moon')
             logo.style.width = '20%'
@@ -363,6 +372,9 @@ function michaelMoves() {
           displayScore.innerHTML = points
           if (fullMoon === false) {
             fullMoon = true
+            removeMichael()
+            michael.status = 'mj-werewolf'
+            selectCellId(michael.position).classList.add(michael.status)
             logo.setAttribute('src', 'images/full-moon.png')
             logo.setAttribute('alt', 'Full Moon')
             logo.style.width = '20%'
@@ -438,13 +450,11 @@ function playGame() {
         if (fullMoon === false) {
           // What happens if Zombies encounter Michael
           if (zombie.position === michael.position) {
-            console.log(lives)
             clearInterval(gameInterval)
             removeMichael()
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
             if (lives > 0) {
               lives--
-              console.log(lives)
               displayLives[lives].setAttribute('src', 'images/lives-lost.png')
               setTimeout(() => {
                 removeAllZombies()
@@ -485,11 +495,6 @@ function playGame() {
           }
           // What happens in full moon mode
         } if (fullMoon === true) {
-          //  Transformation michael and page
-          removeMichael()
-          michael.status = 'mj-werewolf'
-          selectCellId(michael.position).classList.add(michael.status)
-
           //  What happens if Zombies encounter Michael Werewolf
           if (zombie.position === michael.position) {
             selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie-scared')
@@ -551,9 +556,10 @@ document.querySelector('#start').addEventListener('click', () => {
   setTimeout(() => {
     zombiesToStartPosition()
     michaelToStartPosition()
+    michaelMoves()
     playGame()
   }, 3000)
 })
-document.querySelector('#start').addEventListener('click', () => michaelMoves())
+
 // Reset Game buttom will refresh the page and start the game fron scratch
 document.querySelector('#reset').addEventListener('click', () => location.reload())
