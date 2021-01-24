@@ -395,5 +395,5 @@ if (points === 400 || points === 800) {
 
 ## Challenges & Lessons learned
 * Setting up a grid game in a programatic way with minimal HTML and CSS involvement 
-* Code duplication: I completely realise as my first project that the code written is probably the most optimised and would love to relook at it once gained more experience
+* Code duplication: as my first project the code written is not the most optimised and would need to be re looked at
 * Understanding timings with TimeOuts and Intervals has definitely been a challenge and how to deal with them once they are nested with each other (.i.e. collision detection)
