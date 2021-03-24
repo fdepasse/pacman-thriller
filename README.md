@@ -32,7 +32,7 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 <br/>
 
 ## <a name="getting-started"></a>Getting Started
-You can either play install run the code on your own machine or play the game online.
+You can either install the source code on your own machine or play the game online.
 
 ### Run the Game on your Machine
 * Click the "Code" button on the [repository](https://github.com/fdepasse/pacman-thriller) and choose either to **Clone** it or to **Download ZIP** the files
