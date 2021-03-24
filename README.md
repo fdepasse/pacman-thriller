@@ -464,6 +464,9 @@ function gameOver() {
 <p align="center"><img src="images/losing-screen.png"></p>
 <br/>
 
+### Step 5: Styling
+I have entirely styled the game with pure CSS and using a [normalised CSS file](https://necolas.github.io/normalize.css/). CSS Classes have been key during the development of the game. I have been able to toggle them on and off to render the characters movements on the page.
+
 ## <a name="enhancements"></a>Enhancements
 ### Remaining Bugs
 The collision detection within Michael and the Zombies is not perfect. Sometimes Michael can go through the zombies.
