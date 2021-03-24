@@ -1,48 +1,90 @@
+# <p><span>Pac-Man Thriller Edition</span><img align="right" src="https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png"></p>
+<hr/>
+<br/><br/><br/>
+
+<p align="center"><img src="images/thriller-logo-small.png"></p>
+
+<!--![final_game](images/final_game.png)-->
+
+<br/>
+## Table of Contents
+* [Overview](#overview)
+* [Play the game](#play)
+* [Project Brief](#brief)
+* [Technologies Used](#technologies)
+* [Approach](#approach)
+* [Final Product](#final)
+* [Future Enhancements](#enhancements)
+* [Wins & Challenges](#wins-and-challenges)
 
 
-# ![GA logo](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Pac - Man Thriller Edition
-#SEI/projects/project1
 
-![final_game](images/final_game.png)
+<br/>
+## <a name="overview"></a>Overview
+This was my first project from the Software Engineering Immersive Course I took at General Assembly London, built after 4 weeks of class. This was also my first ever project as a developer. 
 
+It was a **solo project** and the timeframe was **one week**.
 
-## Overview
-This was the first project from the Software Engineering Immersive Course at General Assembly London, built after 4 weeks of class. This was also my first ever project as a developer. 
+I have created a grid based version of the classic game [Pac-Man](https://en.wikipedia.org/wiki/Pac-Man) using **HTML**, **CSS**, **Vanilla JavaScript** and **DOM Manipulation**. 
 
-All students have been given the task to individually create a grid based game using HTML, CSS and JavaScript within one week. We had the choice of several games and I picked Pac - Man. 
+The theme of the game is inspired after Michael Jackson’s Thriller [video clip](https://www.youtube.com/watch?v=4V90AmXnguw). **Pac-Man** has been replaced by **Michael** and the traditional **ghosts** by **zombies**. **Power Pellets** are **Full Moons** and the **Bonus Fruit** has been replaced by **Pop Corn**.
 
-To make my game a bit different, I have inspired it after Michael Jackson’s Thriller soundtrack and video clip. **Pac - Man** has been replaced by **Michael** and the traditional **ghosts** by **zombies**. **Power Pellets** are **Full Moons** and the **Bonus Fruit** appearing after a certain amount of dots is gathered has been replaced by **Pop Corn**.
-
-You can access the game with this [link](https://fdepasse.github.io/project-1/) and [here](https://github.com/fdepasse/project-1) is a link to my GitHub repository for this project.
+>Access the **game** [here](https://fdepasse.github.io/pacman-thriller/) and the **repository** [here](https://github.com/fdepasse/pacman-thriller)
 
 
-## Brief
-* **Render a game in the browser**
-* **Design logic for winning** & **visually display which player won**
-* **Include separate HTML / CSS / JavaScript files**
-* Stick with **KISS (Keep It Simple Stupid)** and **DRY (Don’t Repeat Yourself)** principles
-* Use **Javascript** for **DOM manipulation**
-* **Deploy your game online**, where the rest of the world can access it
-* Use **semantic markup** for HTML and CSS (adhere to best practices)
+<br/>
+## <a name="play"></a>Play the game
+* Visit this [link](https://fdepasse.github.io/pacman-thriller/)
+* Click the **Start Game** button to launch the game
+* Once all characters have appeared start moving Michael using the **top**, **right**, **down** and **left** arrow keys of your keyboard
+* Eat all dots and full moons to **win the game** while avoiding being caught by the zombies
+* When Michael lands on a **Full Moon** he will turn into a Werewolf for 10 seconds and will have the ability to eat zombies and score extra points
+* After reaching the 400 and 800 points markers a **Pop Corn** bonus worth 100 points will appear at a random location on the grid
+* You will **lose the game** if you lose your 3 lives
+* You can **reset** the game at any point by clicking the **Reset Game** button
+* Points system: **Dots** 10 points, **Moons** 50 points, **Pop Corn** 100 points, **Zombie** (during Full Moon Mode) points
 
+![final_game](images/navbar.png)
 
-## Technologies Used
+> In pure classic Pac-Man style, once you have initiated the first movement, Michael will automatically carry on moving in the same direction until you press another arrow key or he encounters a grave stone or a zombie
+
+<br/>
+## <a name="brief"></a>Project Brief
+* Render a game in the browser
+* Design logic for winning & visually display which player won
+* Include separate HTML / CSS / JavaScript files
+* Stick with KISS (Keep It Simple Stupid) and DRY (Don’t Repeat Yourself) principles
+* Use Javascript for DOM manipulation
+* Deploy your game online, where the rest of the world can access it
+* Use semantic markup for HTML and CSS (adhere to best practices)
+
+<br/>
+## <a name="technologies"></a>Technologies Used
+
+###Frontend
 * HTML
 * CSS
-* JavaScript
-* QuickTime Player
-* Preview
-* Git and GitHub
+* Vanilla JavaScript
 * Google Fonts
 
+###Development tools
+* VS Code
+* Git
+* GitHub (including deployment)
+* Google Chrome Dev Tools
+* QuickTime Player (sound editing)
+* Preview (pictures editing)
+* Zoom
+* Slack
 
-## Approach
-### Building the board
-* The challenge here was to build board game with different features that will determine the characters behaviour as they move on the grid:  stones (or walls in traditional Pac - Man) , dot (food), 4 x moons (power pellet), a tunnel right entrance and a tunnel left entrance. 
-* I wanted to achieve in the most programatic way possible using JavaScript and DOM Manipulation.
+<br/>
+## <a name="approach"></a>Approach
+### Step 1: Building the board
+<p align="center"><img src="images/grid.png"></p>
 
-#### Creating the board and the cells
-* After deciding on the shape (square) and the size (18 x 18) of the grid, I used a for loop to create the 324 cells of the grid by manipulating the DOM and giving each cell innerHTML (useful for debugging), an id (extensively used during the course of the game for the characters’ positions), dimensions. I also pushed all cells to an array for future use.
+#### Problem #1: Programatically generate a 18 x 18 square grid via DOM Manipulation
+I used a **for loop** to create all the cells. I gave each of them an innerHTML (useful for debugging), an id (extensively used during the course of the game for the characters’ positions) and dimensions. I also pushed all cells to an array for future use.
+
 ```
 for (let i = 0; i < gridWidth ** 2; i++) {
   const newCell = document.createElement(‘div’)
@@ -55,35 +97,21 @@ for (let i = 0; i < gridWidth ** 2; i++) {
 }
 ```
 
+#### Problem #2: Give each cell the right class to represent "stones", "dots", "moons" and "tunnels"
+I chose to store my cells by type within an object of arrays, each key being a cell type taking an array of cells as value as per below.
 
-#### Drawing the board
-* I chose to store my cells by type within an object of arrays, each key being a cell type taking an array of cells as value as per below.
-``` javascript
+``` 
 const cellsObject = {
-  stones: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 36, 54, 72, 90, 108, 126, 162, 180, 198, 216, 234, 252, 270, 288, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 305, 287, 269, 251, 233, 215, 197, 179, 143, 125, 107, 89, 71, 53, 35, 26, 44, 62, 63, 45, 27, 47, 48, 49, 50, 51, 69, 68, 67, 66, 65, 60, 59, 58, 57, 56, 38, 39, 40, 41, 42, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 114, 132, 134, 135, 153, 152, 137, 119, 139, 140, 141, 142, 127, 128, 129, 130, 168, 186, 187, 188, 189, 190, 191, 173, 175, 193, 194, 176, 177, 195, 196, 178, 163, 181, 164, 182, 165, 183, 166, 184, 206, 207, 225, 224, 222, 220, 219, 218, 236, 237, 238, 240, 258, 259, 260, 261, 262, 263, 245, 227, 229, 247, 248, 230, 231, 249, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285],
+stones: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 36, 54, 72, 90, 108, 126, 162, 180, 198, 216, 234, 252, 270, 288, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 305, 287, 269, 251, 233, 215, 197, 179, 143, 125, 107, 89, 71, 53, 35, 26, 44, 62, 63, 45, 27, 47, 48, 49, 50, 51, 69, 68, 67, 66, 65, 60, 59, 58, 57, 56, 38, 39, 40, 41, 42, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 114, 132, 134, 135, 153, 152, 137, 119, 139, 140, 141, 142, 127, 128, 129, 130, 168, 186, 187, 188, 189, 190, 191, 173, 175, 193, 194, 176, 177, 195, 196, 178, 163, 181, 164, 182, 165, 183, 166, 184, 206, 207, 225, 224, 222, 220, 219, 218, 236, 237, 238, 240, 258, 259, 260, 261, 262, 263, 245, 227, 229, 247, 248, 230, 231, 249, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285],
   dots: [291, 292, 290, 289, 293, 294, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 268, 267, 266, 265, 264, 257, 256, 254, 255, 253, 235, 217, 199, 200, 201, 202, 203, 221, 239, 204, 205, 223, 226, 208, 209, 210, 228, 246, 211, 212, 213, 214, 232, 250, 185, 185, 167, 145, 146, 147, 148, 149, 131, 113, 112, 111, 109, 110, 91, 73, 55, 19, 20, 21, 22, 23, 24, 25, 43, 61, 74, 75, 76, 77, 78, 79, 80, 81, 82, 64, 46, 28, 29, 30, 31, 32, 33, 34, 70, 83, 84, 85, 86, 87, 88, 106, 124, 123, 122, 121, 120, 138, 156, 174, 192, 157, 158, 159, 160],
   moons: [37, 52, 271, 286],
   tunnelright: 161,
   tunnelleft: 144
 }
 ```
+I then created a function to loop through each array in `cellsObject` and give each cell the relevant class on the board.
 
-* To get to the above arrays,  I have used an event listener to allow me to draw the board in the browser and I copied the arrays from the browser’s console to my JS file.
-
-``` javascript
-const cells = document.querySelectorAll('#grid div')
-cells.forEach((div) => {
-  div.addEventListener('click', () => {
-    div.classList.add('dot')
-    cellsObject.dots.push(div.innerHTML)
-    console.log(cellsObject.dots)
-  })
-})
 ```
-
-* Lastly I looped through each array to give each cell the relevant class on the board (stone, dots, moons, tunnel.
-
-``` javascript
 function giveClassToCells(array, className) {
   array.forEach((element) => {
     selectCellId(element).classList.add(className)
@@ -92,12 +120,15 @@ function giveClassToCells(array, className) {
 giveClassToCells(cellsObject.stones, 'stone')
 ```
 
+<br/>
+<hr/>
+### Step 2: Creating the characters
+<p align="center"><img src="images/characters.png"></p>
 
-#### Creating the characters
-* I have chosen to create objects for my characters so I could store and update useful information about them at all time during the game: charName being equal to the name of their class, start and current position. 
-* For Michael, I needed an extra key-value property so I have created an extension of the Character class to a class of Hero so I could add the status of Michael (mj = normal mode / mj-werewolf = full moon mode)
-* For the zombies I have finally stored all 4 objects in an array which has allowed to loop through them to manage their movements.
-``` javascript
+#### <a name="position"></a>Problem #1: Store information about the characters so it can be easily accessed to manipulate the DOM
+I created a class of `Character` taking the following properties common to all characters: `charName` (a CSS class of the character), `startPosition` (a cell id number to know where to make the characters appear on the grid at first) and `position` (the cell id position where the character currently is at any point during the game).
+
+```
 class Character {
   constructor(charName, startPosition) {
     this.charName = charName
@@ -105,7 +136,12 @@ class Character {
     this.position = ''
   }
 }
+```
 
+#### Problem #2: Capture each character specificities
+For Michael, I needed an extra key-value pair to be able to change Michael's status between "Normal" and "Werewolf" depending if the Full Moon mode was activated or not. I have created an extension of the Character class to a class of Hero so I could add the status of Michael (mj = normal mode / mj-werewolf = full moon mode).
+
+```
 class Hero extends Character {
   constructor(charName, startPosition) {
     super(charName, startPosition)
@@ -113,35 +149,32 @@ class Hero extends Character {
   }
 }
 ```
+For the zombies, I have stored the 4 objects in an array so I could manage their behaviour all at once by [looping through them](#zombies). 
 
 
-### Game Flow 
-* The game starts when the “Start Game” button is clicked by calling the `playGame()` within and even listener
-* The `playGame()`  function is called 3 seconds after the button is clicked leaving time for the intro music to play and for the grid and characters to appear, all being managed with timeouts
-* On click of the button, Michael can start moving as well
-* The function `michaelMoves()` manages Michael’s behaviour and the `playGame()` function controls the flow of the game and includes the interval within which we are looping through the Zombie array to control their behaviour at different stage of the game
-``` javascript
-document.querySelector('#start').addEventListener('click', () => {
-  audioPlayer.src = 'sounds/intro.m4a'
-  audioPlayer.play()
-  setTimeout(() => {
-    giveClassToCells(cellsObject.dots, 'dot')
-    giveClassToCells(cellsObject.moons, 'moon')
-  }, 2300)
-  setTimeout(() => {
-    zombiesToStartPosition()
-    michaelToStartPosition()
-    michaelMoves()
-    playGame()
-  }, 3000)
-})
+<br/>
+<hr/>
+### Step 3: The Game Flow
+#### Problem #1: Keeping track of the lives, the points scored and the Full Moon mode
+As these variables change during the game, they trigger specific events. Therefore, it was important to be able to check their status at all time. For this reason, I have stored them in global variables:
+
+* `lives` set to 3 by default and decreases when Michael gets caught by zombies
+* `points` set to 0 to start with and updates as the player eats dots, moons, pop corn and zombies when in Full Moon mode
+* `fullMoon` set to false by default and switches to true when Michael lands on a moon
+
+<p align="center"><img src="images/variables.png"></p>
+
+#### Problem #2: Make Michael move with the arrow keys of the keyboard, manage his behaviour and his impact on the game depending on the situation he encounters
+Michael’s movements have been wrapped under a function called `michaelMoves()`. It listens to "keyup" events on the keyboard and returns the relevant set of behaviours depending on whether the key pressed is "up", "right", "down" or "left" (managed with an if statement). 
+
+When a key is pressed:
+
+* An interval running the code every 300ms allows Michael to move on its own once a direction key has been pressed
+* If statements constantly check `michael.position` (property of `michael` [object](#position)) and his next move
+* Depending on the type of cell he is landing on, the relevant logic is applied
+* Points scoring is captured in this statement
+
 ```
-
-
-### Michael’s Movements
-* Michael’s movements have been wrapped under a function called `michaelMoves()` which manages grid navigation, points scoring and triggering “Full Moon Mode”
-
-``` java
 function michaelMoves() {
 
   document.addEventListener('keyup', (event) => {
@@ -202,20 +235,13 @@ function michaelMoves() {
 ...
 ```
 
-#### Navigating the grid
-* To move Michael, I have set an event listener on the arrow keys. Each direction (up, right, left, down) is set within an interval so that the player only need to press the key once and Michael will keep moving until another direction is chosen by the player
-* There is a set a of if statements within each direction’s interval to manage Michael’s behaviour when encountering each type of cell (going through a tunnel and landing on the other side of the grid, not going through stones etc.)
-
-#### Scoring Points
-* Within the relevant statement when Michael reaches a cell with the class of ‘dot’ the score will increase by 10 points, ‘moon’ 50 points and the Full Moon mode will start for 10 seconds (more details below), ‘pop corn’ 100 points (see more details below).
-
-
-### Zombies Movements
+#### <a name="zombies"></a>Problem #3: Make the Zombies move randomly on the grid, manage their behaviour and their impact on the game depending on the situation they encounter
 * To manage the zombies behaviour, I have set a number of if statements within a for loop over the array of zombies I created (containing each zombie as an object).
 * The for each loop is nested within an  interval to allow each zombie to move automatically every 300 ms as well as checking what cell they are landing to adapt they behaviour accordingly
 * If statements are in place to adapt the zombie’s behaviour when encountering Michael, a stone, a tunnel or any other cell
 * When encountering Michael, the zombie’s behaviour is different whether the full moon mode is activated or not.  I have therefore split the for each loop into 2 main if statements: when the full moon mode is on and when it is not
-``` javascript
+
+```
 // Storing all possible directions for the Zombies
   const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
 
@@ -283,11 +309,42 @@ function michaelMoves() {
 ```
 
 
+### Generic start game
+* The game starts when the “Start Game” button is clicked by calling the `playGame()` within and even listener
+* The `playGame()`  function is called 3 seconds after the button is clicked leaving time for the intro music to play and for the grid and characters to appear, all being managed with timeouts
+* On click of the button, Michael can start moving as well
+* The function `michaelMoves()` manages Michael’s behaviour and the `playGame()` function controls the flow of the game and includes the interval within which we are looping through the Zombie array to control their behaviour at different stage of the game
+
+```
+document.querySelector('#start').addEventListener('click', () => {
+  audioPlayer.src = 'sounds/intro.m4a'
+  audioPlayer.play()
+  setTimeout(() => {
+    giveClassToCells(cellsObject.dots, 'dot')
+    giveClassToCells(cellsObject.moons, 'moon')
+  }, 2300)
+  setTimeout(() => {
+    zombiesToStartPosition()
+    michaelToStartPosition()
+    michaelMoves()
+    playGame()
+  }, 3000)
+})
+```
+
+
+
+
+
+
+
+
 ### Full Moon Mode
 * The mode is started for 10 seconds when Michael lands on a cell with the class of “moon”, only if a “Full Moon” mode is not already active
 * When the above happens, Michael scores 50 points, the Thriller logo is replaced by the full moon, Michael tuns into a werewolf
 * After 10 seconds, a Timeout ensures that the full moon mode is switched off, Michael returns to its normal form and the Thriller logo comes back
 * This code is included in the function called `michaelMoves()` 
+
 ``` javascript
 ...
 else if (selectCellId(michael.position + 1).classList.contains('moon')) {
@@ -361,22 +418,32 @@ if (points === 400 || points === 800) {
 ```
 
 
+
 ### Variables & Functions
 * A number of variables and functions have been globally declared to track the progress of the game
-* `fullMoon` set to false by default and gets switched to true when Michael lands on a cell with the class of moon, triggering the “Full Moon” mode
-* `points` set to 0 to start with, it gets updated as the player eats dots, moons, pop corn and Zombies when in Full Moon mode
+
+
 * `gameWon()` function is called at the start of the `playGame()` function to check whether all dots and moons have been eaten by the player and if so triggers the winning screen to appear and the winning music to play
 * `gameOver()` function is called within the the for each loop in the zombie interval when a zombie eats Michael and there are no lives left. It then triggers losing screen and music.
-* `lives` is a variable set to 3 to start with and decreasing as the Michael gets eaten by zombies
+
 * `popCornPosition` is assigned a random position in the `popCornPossibleLocations()` function when the Pop Corn mode is triggered
 * `popCornTime` is assigned to 0 to start with and gets updated to 1 once 400 points or 800 points are reached 
 
 
+
+
+
+
+<br/>
+## <a name="final"></a>Final Product
+
+<br/>
+## <a name="enhancements"></a>Enhancements
 ### Remaining Bugs
 * The collision detection within Michael and the Zombies is not perfect depending on when the characters started their interval.
 * Although all three lives have been lost, the player can still have a last go and only loses the game after losing 4 lives
 
-
+<br/>
 ## Potential Future Enhancements
 * Smart zombies that will track Michael using path finding algorithm
 * Different behaviour for each Zombie
@@ -392,8 +459,8 @@ if (points === 400 || points === 800) {
 * Pausing the game / Resuming the game
 * Cumulative points when eating zombies
 
-
-## Challenges & Lessons learned
+<br/>
+## <a name="wins-and-challenges"></a>Wins & Challenges
 * Setting up a grid game in a programatic way with minimal HTML and CSS involvement 
 * Code duplication: as my first project the code written is not the most optimised and would need to be re looked at
 * Understanding timings with TimeOuts and Intervals has definitely been a challenge and how to deal with them once they are nested with each other (.i.e. collision detection)
