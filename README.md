@@ -12,9 +12,8 @@
 * [Project Brief](#brief)
 * [Technologies Used](#technologies)
 * [Approach](#approach)
-* [Final Product](#final)
-* [Future Enhancements](#enhancements)
-* [Wins & Challenges](#wins-and-challenges)
+* [Enhancements](#enhancements)
+* [Wins, Challenges & Learnings](#wins-and-challenges)
 
 <br/>
 
@@ -41,9 +40,9 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 * After reaching the 400 and 800 points markers a **Pop Corn** bonus worth 100 points will appear at a random location on the grid
 * You will **lose the game** if you lose your 3 lives
 * You can **reset** the game at any point by clicking the **Reset Game** button
-* Points system: **Dots** 10 points, **Moons** 50 points, **Pop Corn** 100 points, **Zombie** (during Full Moon Mode) points
+* Points system: **Dots** 10 points, **Moons** 50 points, **Pop Corn** 100 points, **Zombie** (during Full Moon Mode) 200 points
 
-![final_game](images/navbar.png)
+<p align="center"><img src="images/navbar.png"></p>
 
 > In pure classic Pac-Man style, once you have initiated the first movement, Michael will automatically carry on moving in the same direction until you press another arrow key or he encounters a grave stone or a zombie
 
@@ -84,7 +83,7 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 ### Step 1: Building the board
 <p align="center"><img src="images/grid.png"></p>
 
-#### Problem #1: Programatically generate a 18 x 18 square grid via DOM Manipulation
+#### Problem #1: Programatically generating a 18 x 18 square grid via DOM Manipulation
 I used a **for loop** to create all the cells. I gave each of them an innerHTML (useful for debugging), an id (extensively used during the course of the game for the characters’ positions) and dimensions. I also pushed all cells to an array for future use.
 
 ```
@@ -98,8 +97,9 @@ for (let i = 0; i < gridWidth ** 2; i++) {
   allCells.push(newCell)
 }
 ```
+<br/>
 
-#### Problem #2: Give each cell the right class to represent "stones", "dots", "moons" and "tunnels"
+#### Problem #2: Giving each cell the right class to represent "stones", "dots", "moons" and "tunnels"
 I chose to store my cells by type within an object of arrays, each key being a cell type taking an array of cells as value as per below.
 
 ``` 
@@ -129,7 +129,7 @@ giveClassToCells(cellsObject.stones, 'stone')
 ### Step 2: Creating the characters
 <p align="center"><img src="images/characters.png"></p>
 
-#### <a name="position"></a>Problem #1: Store information about the characters so it can be easily accessed to manipulate the DOM
+#### <a name="position"></a>Problem #1: Storing information about the characters so it can be easily accessed to manipulate the DOM
 I created a class of `Character` taking the following properties common to all characters: `charName` (a CSS class of the character), `startPosition` (a cell id number to know where to make the characters appear on the grid at first) and `position` (the cell id position where the character currently is at any point during the game).
 
 ```
@@ -142,7 +142,9 @@ class Character {
 }
 ```
 
-#### Problem #2: Capture each character specificities
+<br/>
+
+#### <a name="char-spec"></a> Problem #2: Capturing each character specificities
 For Michael, I needed an extra key-value pair to be able to change Michael's status between "Normal" and "Werewolf" depending if the Full Moon mode was activated or not. I have created an extension of the Character class to a class of Hero so I could add the status of Michael (mj = normal mode / mj-werewolf = full moon mode).
 
 ```
@@ -155,27 +157,37 @@ class Hero extends Character {
 ```
 For the zombies, I have stored the 4 objects in an array so I could manage their behaviour all at once by [looping through them](#zombies). 
 
+```
+const zombies = []
+const zombMexican = new Character('mexican-zombie', 115)
+const zombOffice = new Character('office-zombie', 118)
+const zombNews = new Character('news-zombie', 169)
+const zombPirate = new Character('pirate-zombie', 172)
+zombies.push(zombMexican, zombOffice, zombNews, zombPirate)
+```
 
 <br/>
 
 <hr/>
 
-### Step 3: The Game Flow
-#### Problem #1: Keeping track of the lives, the points scored and the Full Moon mode
+### Step 3: The Gameplay
+#### <a name="variables"></a>Problem #1: Keeping track of the lives, the points scored, the full moon and pop corn modes
 As these variables change during the game, they trigger specific events. Therefore, it was important to be able to check their status at all time. For this reason, I have stored them in global variables:
 
 * `lives` set to 3 by default and decreases when Michael gets caught by zombies
 * `points` set to 0 to start with and updates as the player eats dots, moons, pop corn and zombies when in Full Moon mode
 * `fullMoon` set to false by default and switches to true when Michael lands on a moon
+* `popCornTime` set to 0 by default and switches to 1 when 400 and 800 points are scored
 
 <p align="center"><img src="images/variables.png"></p>
 
-#### Problem #2: Make Michael move with the arrow keys of the keyboard, manage his behaviour and his impact on the game depending on the situation he encounters
+
+#### <a name="michael"></a>Problem #2: Moving Michael with the arrow keys of the keyboard, managing his behaviour and his impact on the game depending on the situation he encounters
 Michael’s movements have been wrapped under a function called `michaelMoves()`. It listens to "keyup" events on the keyboard and returns the relevant set of behaviours depending on whether the key pressed is "up", "right", "down" or "left" (managed with an if statement). 
 
 When a key is pressed:
 
-* An interval running the code every 300ms allows Michael to move on its own once a direction key has been pressed
+* An interval running the code every 300ms allows Michael to move on his own
 * If statements constantly check `michael.position` (property of `michael` [object](#position)) and his next move
 * Depending on the type of cell he is landing on, the relevant logic is applied
 * Points scoring is captured in this statement
@@ -201,79 +213,40 @@ function michaelMoves() {
           selectCellId(michael.position).classList.remove('dot')
           points += 10
           displayScore.innerHTML = points
-        } else if (selectCellId(michael.position + 1).classList.contains('moon')) {
-          michael.position++
-          selectCellId(michael.position).classList.add(michael.status)
-          selectCellId(michael.position).classList.remove('moon')
-          points += 50
-          displayScore.innerHTML = points
-          if (fullMoon === false) {
-            fullMoon = true
-            removeMichael()
-            michael.status = 'mj-werewolf'
-            selectCellId(michael.position).classList.add(michael.status)
-            logo.setAttribute('src', 'images/full-moon.png')
-            logo.setAttribute('alt', 'Full Moon')
-            logo.style.width = '20%'
-            logo.style.padding = '0 0 7.5% 0'
-            setTimeout(() => {
-              removeMichael()
-              fullMoon = false
-              michael.status = 'mj'
-              selectCellId(michael.position).classList.add(michael.status)
-              logo.setAttribute('src', 'images/thriller-logo.png')
-              logo.setAttribute('alt', 'Thriller Logo')
-              logo.style.width = '50%'
-            }, 10000)
-          }
-        } else if (selectCellId(michael.position + 1).classList.contains('pop-corn')) {
-          michael.position++
-          selectCellId(michael.position).classList.add(michael.status)
-          selectCellId(michael.position).classList.remove('pop-corn')
-          points += 100
-          displayScore.innerHTML = points
-        } else {
-          michael.position++
-          selectCellId(michael.position).classList.add(michael.status)
-        }
+...
       }, 300)
     }
-...
 ```
 
-#### <a name="zombies"></a>Problem #3: Make the Zombies move randomly on the grid, manage their behaviour and their impact on the game depending on the situation they encounter
-* To manage the zombies behaviour, I have set a number of if statements within a for loop over the array of zombies I created (containing each zombie as an object).
-* The for each loop is nested within an  interval to allow each zombie to move automatically every 300 ms as well as checking what cell they are landing to adapt they behaviour accordingly
-* If statements are in place to adapt the zombie’s behaviour when encountering Michael, a stone, a tunnel or any other cell
-* When encountering Michael, the zombie’s behaviour is different whether the full moon mode is activated or not.  I have therefore split the for each loop into 2 main if statements: when the full moon mode is on and when it is not
+<br/>
+
+#### <a name="zombies"></a>Problem #3: Moving the Zombies randomly on the grid, managing their behaviour and their impact on the game depending on the situation they encounter
+* I have used a `forEach` loop on the zombies array set in [Step 2](#char-spec) in order to run the same code on all 4 zombies
+* The loop is wrapped in a interval allowing the characters to change direction every 300ms
 
 ```
-// Storing all possible directions for the Zombies
-  const zombieDirectionArray = [1, -1, gridWidth, -gridWidth]
-
-  // Timeout to start the game after a couple of seconds
-  setTimeout(() => {
-
     const gameInterval = setInterval(() => {
-      // Check is there are still any dots or moon on the board
-      // If not game is won
-      gameWon(gameInterval)
-      // Run the below for each zombie in the array of objects 'zombies'
+...
       zombies.forEach((zombie) => {
-        // Create a const to store the next move
-        const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]
-        // Remove the zombie class at the start of each loop
-        selectCellId(zombie.position).classList.remove(zombie.charName, 'zombie', 'zombie-scared')
-        // What happens in normal mode
-        if (fullMoon === false) {
-          // What happens if Zombies encounter Michael
+```
+
+* I have stored all possible direction the zombies can take in a `zombieDirectionArray` array and I am then calculating and storing the characters next move in a variable `randomDirection`
+
+`const randomDirection = zombieDirectionArray[Math.floor(Math.random() * zombieDirectionArray.length)]`
+
+* If statements check first if the full moon mode is on or not and then the relevant logic applies depending on what cell each zombie land on
+* The collision detection with Michael happens in this code block and the relevant logic happens if the full moon mode is on or not
+
+```
+...
+ if (fullMoon === false) {
           if (zombie.position === michael.position) {
             clearInterval(gameInterval)
             removeMichael()
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
+            lives--
+            displayLives[lives].setAttribute('src', 'images/lives-lost.png')
             if (lives > 0) {
-              lives--
-              displayLives[lives].setAttribute('src', 'images/lives-lost.png')
               setTimeout(() => {
                 removeAllZombies()
               }, 1000)
@@ -288,70 +261,21 @@ function michaelMoves() {
             } else {
               gameOver()
             }
-            //  How the Zombie navigate the grid (move randomly avoiding stones, going through tunnel etc)
-          } else if (zombie.position === cellsObject.tunnelright) {
-            if (randomDirection === 1) {
-              zombie.position = cellsObject.tunnelleft
-              selectCellId(cellsObject.tunnelleft).classList.add(zombie.charName, 'zombie')
-            } else {
-              zombie.position--
-              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-            }
-          } else if (zombie.position === cellsObject.tunnelleft) {
-            if (randomDirection === -1) {
-              zombie.position = cellsObject.tunnelright
-              selectCellId(cellsObject.tunnelright).classList.add(zombie.charName, 'zombie')
-            } else {
-              zombie.position++
-              selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-            }
-          } else if (selectCellId(zombie.position + randomDirection).classList.contains('stone')) {
-            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-          } else {
-            zombie.position += randomDirection
-            selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
-          }
 ...
 ```
 
+<br/>
 
-### Generic start game
-* The game starts when the “Start Game” button is clicked by calling the `playGame()` within and even listener
-* The `playGame()`  function is called 3 seconds after the button is clicked leaving time for the intro music to play and for the grid and characters to appear, all being managed with timeouts
-* On click of the button, Michael can start moving as well
-* The function `michaelMoves()` manages Michael’s behaviour and the `playGame()` function controls the flow of the game and includes the interval within which we are looping through the Zombie array to control their behaviour at different stage of the game
+#### Problem #4: Implementing the Full Moon mode
+##### Dealing with Michael's side of things in the `michaelMoves()` function
+
+
+* When Michael lands on a "moon" it switches [`fullMoon`](#variables) to `true` if the full moon mode is not already on
+* [`michael.status`](#char-spec) changes to `mj-werewolf` and allows Michael to turn into a Werewolf
+* The appearance of the whole page changes
+* A `setTimeout` make sure the full moon mode ends after 10s and that Michael and the page appearance return to normal mode
 
 ```
-document.querySelector('#start').addEventListener('click', () => {
-  audioPlayer.src = 'sounds/intro.m4a'
-  audioPlayer.play()
-  setTimeout(() => {
-    giveClassToCells(cellsObject.dots, 'dot')
-    giveClassToCells(cellsObject.moons, 'moon')
-  }, 2300)
-  setTimeout(() => {
-    zombiesToStartPosition()
-    michaelToStartPosition()
-    michaelMoves()
-    playGame()
-  }, 3000)
-})
-```
-
-
-
-
-
-
-
-
-### Full Moon Mode
-* The mode is started for 10 seconds when Michael lands on a cell with the class of “moon”, only if a “Full Moon” mode is not already active
-* When the above happens, Michael scores 50 points, the Thriller logo is replaced by the full moon, Michael tuns into a werewolf
-* After 10 seconds, a Timeout ensures that the full moon mode is switched off, Michael returns to its normal form and the Thriller logo comes back
-* This code is included in the function called `michaelMoves()` 
-
-``` javascript
 ...
 else if (selectCellId(michael.position + 1).classList.contains('moon')) {
           michael.position++
@@ -380,12 +304,14 @@ else if (selectCellId(michael.position + 1).classList.contains('moon')) {
           }
 ...
 ```
+<p align="center"><img src="images/mj-werewolf-small.png"></p>
 
-* During the “Full Moon” mode, Michael as a werewolf can eat the Zombies and score 200 points in the process. 
-* Zombies become scared and take a class of “zombie-scared” which makes them shake
-* Once eaten, Zombies are sent back to their starting position
-* This part of the program has been included within the for each loop over the  Zombie so that each a potential encounter with Michael can be checked over the 4 characters.
-``` javascript
+##### Dealing with the zombies' side of things in the [`forEach`](#zombies) loop
+* Michael as a werewolf can eat the zombies and score 200 points in the process 
+* Zombies enter scared mode and take a class of “zombie-scared” which makes them shake
+* Once eaten, Zombies appear back on their starting position after 5s
+
+```
 if (fullMoon === true) {
           //  What happens if Zombies encounter Michael Werewolf
           if (zombie.position === michael.position) {
@@ -398,10 +324,24 @@ if (fullMoon === true) {
             }, 5000)
 ```
 
+<br/>
 
-### Pop Corn Time
-* Once 400 and 800 points have been reached a “Pop - Corn” bonus appear randomly on the board. If eaten by Michael it gives an extra 100 points to the player.
-* A  `popCornRandomLocation()` is there to generate random position for the pop corn to appear. It is called within a `popCornMode()` function which is to give the random location a class of pop corn (making the pop corn appear on the grid at the random location) and 10 seconds later removing this class to make the pop corn disappear with a timeout. 
+#### Problem #5: Implementing the Pop Corn mode
+* Once 400 and 800 points have been reached a “Pop - Corn” bonus appear randomly on the board. If eaten by Michael it gives an extra 100 points to the player
+<p align="center"><img src="images/pop-corn-small.png"></p>
+
+* When points reaches 400 and 800 points, an if statement increment `popCornTime` to 1 and calls the function `popCornMode()`
+
+```
+      if (points === 400 || points === 800) {
+        popCornTime++
+        popCornMode()
+      }
+```
+
+* `popCornMode()` gets a random location on the grid (calling `popCornRandomLocation()`) for the pop corn to appear and set the class of Pop Corn on the selected cell
+* A `setTimeout` ensures the mode lasts 10s only 
+
 ``` javascript
 function popCornMode() {
   if (popCornTime === 1) {
@@ -414,62 +354,136 @@ function popCornMode() {
   }
 }
 ```
-* The  `popCornMode()`  function is called within and if statement in the the Zombie interval to check every 300ms whether 400 or 800 points have been reached. 
-* popCornTime is a global variable equal to 0 when pop corn mode is off and reassigned to 1 when it is on
-``` javascript
-if (points === 400 || points === 800) {
-        popCornTime++
-        popCornMode()
-      }
-```
-
-
-
-### Variables & Functions
-* A number of variables and functions have been globally declared to track the progress of the game
-
-
-* `gameWon()` function is called at the start of the `playGame()` function to check whether all dots and moons have been eaten by the player and if so triggers the winning screen to appear and the winning music to play
-* `gameOver()` function is called within the the for each loop in the zombie interval when a zombie eats Michael and there are no lives left. It then triggers losing screen and music.
-
-* `popCornPosition` is assigned a random position in the `popCornPossibleLocations()` function when the Pop Corn mode is triggered
-* `popCornTime` is assigned to 0 to start with and gets updated to 1 once 400 points or 800 points are reached 
-
-
-
-
-
 
 <br/>
 
-## <a name="final"></a>Final Product
 
+### Step 4: Bringing it all together
+#### Problem #1: Running the game
+* A `playGame()` function runs the entire game
+* `setTimeout` are in place to ensure music and game start playing after a few seconds it [started](#start)
+* The game runs on a 300ms interval which allows to make the zombies move, check if the pop corn mode needs to be activated and if the game should carry on running or stop (game [won](#win) or [lost](#lose))
+
+```
+function playGame() {
+
+  setTimeout(() => {
+    audioPlayer.src = 'sounds/beat.m4a'
+    audioPlayer.loop = 'loop'
+    audioPlayer.play()
+  }, 1130)
+
+  setTimeout(() => {
+
+    const gameInterval = setInterval(() => {
+      gameWon(gameInterval)
+...
+    }, 300)
+  }, 2000)
+}
+```
+
+<br/>
+
+#### <a name="start"></a>Problem #2: Starting the game
+* The game starts when the “Start Game” button is clicked by calling the `playGame()` function within an event listener
+* The `playGame()`  function is called 3 seconds after the button is clicked leaving time for the intro music to play and for the grid and characters to appear, all being managed with timeouts
+* [`michaelMoves()`](#michael) function is also called at this point
+
+```
+document.querySelector('#start').addEventListener('click', () => {
+  audioPlayer.src = 'sounds/intro.m4a'
+  audioPlayer.play()
+  setTimeout(() => {
+    giveClassToCells(cellsObject.dots, 'dot')
+    giveClassToCells(cellsObject.moons, 'moon')
+  }, 2300)
+  setTimeout(() => {
+    zombiesToStartPosition()
+    michaelToStartPosition()
+    michaelMoves()
+    playGame()
+  }, 3000)
+})
+```
+<br/>
+
+#### <a name="win"></a>Problem #3: Winning the game
+* `gameWon(gameInterval)` is called within the [`playGame()`](#start) function at the start of each interval
+* I passed the `gameInterval` as argument so it can be cleared within the function
+* The function itself check if any dots or moons are left on the board and if not the game is won, the winning screen appears
+
+```
+function gameWon(intervalName) {
+  if (areDotOrMoonsLeft() === false) {
+    clearInterval(intervalName)
+    audioPlayer.src = 'sounds/game-won.m4a'
+    audioPlayer.loop = ''
+    audioPlayer.play()
+    grid.style.display = 'none'
+    displayResult.style.display = 'flex'
+    displayResultTitle.innerHTML = 'Congratulations, you moonwalked this!'
+    displayResultImage.setAttribute('src', 'images/mj-happy.png')
+    displayResultImage.setAttribute('alt', 'Michael Jackson Happy')
+    displayFinalScore.innerHTML = `You scored ${points} points`
+    logo.setAttribute('src', 'images/thriller-logo.png')
+    logo.setAttribute('alt', 'Thriller Logo')
+    logo.style.width = '50%'
+  }
+}
+```
+<p align="center"><img src="images/winning-screen.png"></p>
+<br/>
+
+#### <a name="lose"></a>Problem #4: Losing the game
+* The zombies loop checks how many lives are left and calls the `gameOver()` function when none are left (see [code block](#zombies) above)
+* The `gameOver()` function make the losing screen appear and stops the game
+
+```
+function gameOver() {
+  audioPlayer.src = 'sounds/game-over.m4a'
+  audioPlayer.loop = ''
+  audioPlayer.play()
+  grid.style.display = 'none'
+  displayResult.style.display = 'flex'
+  displayResultTitle.innerHTML = 'Game Over'
+  displayResultImage.setAttribute('src', 'images/mj-zombie.png')
+  displayResultImage.setAttribute('alt', 'Zombie Michael Jackson')
+  displayFinalScore.innerHTML = `You scored ${points} points`
+}
+```
+<p align="center"><img src="images/losing-screen.png"></p>
 <br/>
 
 ## <a name="enhancements"></a>Enhancements
 ### Remaining Bugs
-* The collision detection within Michael and the Zombies is not perfect depending on when the characters started their interval.
+The collision detection within Michael and the Zombies is not perfect. Sometimes Michael can go through the zombies.
 
 <br/>
 
-## Potential Future Enhancements
+### Potential Future Enhancements
+* Enhanced collision management between Michael, zombies and between the 4 zombies
 * Smart zombies that will track Michael using path finding algorithm
-* Different behaviour for each Zombie
-* Not allowing collision between zombies
-* Zombies not starting at the same time
+* Different behaviour for each zombie
+* Zombies not moving all at the same time when the game start
 * Scoreboard using local storage
-* Responsiveness, multiple browsers and mobile compatibility
+* Mobile responsiveness
 * Multiple grids and levels
 * Multiple bonus items in addition to pop corn
-* Display a message when the starts
-* Adding an instruction section to explaining how to play the game and rules
-* Pop up showing points when eating a ghost
-* Pausing the game / Resuming the game
 * Cumulative points when eating zombies
 
 <br/>
 
-## <a name="wins-and-challenges"></a>Wins & Challenges
-* Setting up a grid game in a programatic way with minimal HTML and CSS involvement 
-* Code duplication: as my first project the code written is not the most optimised and would need to be re looked at
-* Understanding timings with TimeOuts and Intervals has definitely been a challenge and how to deal with them once they are nested with each other (.i.e. collision detection)
+## <a name="wins-and-challenges"></a>Wins, Challenges & Learnings
+### Wins
+* Building a game with complex logic using JavaScript
+* Styling the game after the Thriller theme
+* Working with Timeouts and Intervals, understanding them when nested
+
+### Challenges
+* Keeping the code simple and not repete it, there is definitely room for improvement
+* Dealing with nested TimeOuts and Intervals
+
+### Learnings
+* Great practice of my HTML, CSS, JavaScript and DOM Manipulation fundamentals
+* Deployement online via GitHub
