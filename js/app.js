@@ -454,8 +454,8 @@ function playGame() {
             removeMichael()
             selectCellId(zombie.position).classList.add(zombie.charName, 'zombie')
             lives--
+            displayLives[lives].setAttribute('src', 'images/lives-lost.png')
             if (lives > 0) {
-              displayLives[lives].setAttribute('src', 'images/lives-lost.png')
               setTimeout(() => {
                 removeAllZombies()
               }, 1000)
