@@ -1,12 +1,11 @@
 # <p><span>Pac-Man Thriller Edition</span><img align="right" src="https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png"></p>
-<hr/>
 <br/><br/><br/>
 
 <p align="center"><img src="images/thriller-logo-small.png"></p>
 
 <!--![final_game](images/final_game.png)-->
 
-<br/>
+
 ## Table of Contents
 * [Overview](#overview)
 * [Play the game](#play)
@@ -441,7 +440,6 @@ if (points === 400 || points === 800) {
 ## <a name="enhancements"></a>Enhancements
 ### Remaining Bugs
 * The collision detection within Michael and the Zombies is not perfect depending on when the characters started their interval.
-* Although all three lives have been lost, the player can still have a last go and only loses the game after losing 4 lives
 
 <br/>
 ## Potential Future Enhancements
