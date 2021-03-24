@@ -62,13 +62,13 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 
 ## <a name="technologies"></a>Technologies Used
 
-###Frontend
+### Frontend
 * HTML
 * CSS
 * Vanilla JavaScript
 * Google Fonts
 
-###Development tools
+### Development tools
 * VS Code
 * Git
 * GitHub (including deployment)
@@ -125,6 +125,7 @@ giveClassToCells(cellsObject.stones, 'stone')
 <br/>
 
 <hr/>
+
 ### Step 2: Creating the characters
 <p align="center"><img src="images/characters.png"></p>
 
@@ -158,6 +159,7 @@ For the zombies, I have stored the 4 objects in an array so I could manage their
 <br/>
 
 <hr/>
+
 ### Step 3: The Game Flow
 #### Problem #1: Keeping track of the lives, the points scored and the Full Moon mode
 As these variables change during the game, they trigger specific events. Therefore, it was important to be able to check their status at all time. For this reason, I have stored them in global variables:
