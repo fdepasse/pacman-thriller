@@ -1,10 +1,10 @@
 # <p><span>Pac-Man Thriller Edition</span><img align="right" src="https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png"></p>
-<br/><br/><br/>
+
+<br/><br/>
 
 <p align="center"><img src="images/thriller-logo-small.png"></p>
 
-<!--![final_game](images/final_game.png)-->
-
+<br/><br/>
 
 ## Table of Contents
 * [Overview](#overview)
@@ -16,9 +16,8 @@
 * [Future Enhancements](#enhancements)
 * [Wins & Challenges](#wins-and-challenges)
 
-
-
 <br/>
+
 ## <a name="overview"></a>Overview
 This was my first project from the Software Engineering Immersive Course I took at General Assembly London, built after 4 weeks of class. This was also my first ever project as a developer. 
 
@@ -32,6 +31,7 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 
 
 <br/>
+
 ## <a name="play"></a>Play the game
 * Visit this [link](https://fdepasse.github.io/pacman-thriller/)
 * Click the **Start Game** button to launch the game
@@ -48,6 +48,7 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 > In pure classic Pac-Man style, once you have initiated the first movement, Michael will automatically carry on moving in the same direction until you press another arrow key or he encounters a grave stone or a zombie
 
 <br/>
+
 ## <a name="brief"></a>Project Brief
 * Render a game in the browser
 * Design logic for winning & visually display which player won
@@ -58,6 +59,7 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 * Use semantic markup for HTML and CSS (adhere to best practices)
 
 <br/>
+
 ## <a name="technologies"></a>Technologies Used
 
 ###Frontend
@@ -77,6 +79,7 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 * Slack
 
 <br/>
+
 ## <a name="approach"></a>Approach
 ### Step 1: Building the board
 <p align="center"><img src="images/grid.png"></p>
@@ -120,6 +123,7 @@ giveClassToCells(cellsObject.stones, 'stone')
 ```
 
 <br/>
+
 <hr/>
 ### Step 2: Creating the characters
 <p align="center"><img src="images/characters.png"></p>
@@ -152,6 +156,7 @@ For the zombies, I have stored the 4 objects in an array so I could manage their
 
 
 <br/>
+
 <hr/>
 ### Step 3: The Game Flow
 #### Problem #1: Keeping track of the lives, the points scored and the Full Moon mode
@@ -434,14 +439,17 @@ if (points === 400 || points === 800) {
 
 
 <br/>
+
 ## <a name="final"></a>Final Product
 
 <br/>
+
 ## <a name="enhancements"></a>Enhancements
 ### Remaining Bugs
 * The collision detection within Michael and the Zombies is not perfect depending on when the characters started their interval.
 
 <br/>
+
 ## Potential Future Enhancements
 * Smart zombies that will track Michael using path finding algorithm
 * Different behaviour for each Zombie
@@ -458,6 +466,7 @@ if (points === 400 || points === 800) {
 * Cumulative points when eating zombies
 
 <br/>
+
 ## <a name="wins-and-challenges"></a>Wins & Challenges
 * Setting up a grid game in a programatic way with minimal HTML and CSS involvement 
 * Code duplication: as my first project the code written is not the most optimised and would need to be re looked at
