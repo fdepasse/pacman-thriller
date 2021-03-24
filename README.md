@@ -8,7 +8,7 @@
 
 ## Table of Contents
 * [Overview](#overview)
-* [Play the game](#play)
+* [Getting Started](#getting-started)
 * [Project Brief](#brief)
 * [Technologies Used](#technologies)
 * [Approach](#approach)
@@ -31,7 +31,16 @@ The theme of the game is inspired after Michael Jackson’s Thriller [video clip
 
 <br/>
 
-## <a name="play"></a>Play the game
+## <a name="getting-started"></a>Getting Started
+You can either play install run the code on your own machine or play the game online.
+
+### Run the Game on your Machine
+* Click the "Code" button on the [repository](https://github.com/fdepasse/pacman-thriller) and choose either to **Clone** it or to **Download ZIP** the files
+* Once the files are on your machine, open the index.html in the browser of your choice
+<p align="center"><img src="images/github.png"></p>
+
+
+### Play the Game Online
 * Visit this [link](https://fdepasse.github.io/pacman-thriller/)
 * Click the **Start Game** button to launch the game
 * Once all characters have appeared start moving Michael using the **top**, **right**, **down** and **left** arrow keys of your keyboard
@@ -482,7 +491,7 @@ The collision detection within Michael and the Zombies is not perfect. Sometimes
 
 ### Challenges
 * Keeping the code simple and not repete it, there is definitely room for improvement
-* Dealing with nested TimeOuts and Intervals
+* Dealing with nested Timeouts and Intervals
 
 ### Learnings
 * Great practice of my HTML, CSS, JavaScript and DOM Manipulation fundamentals
