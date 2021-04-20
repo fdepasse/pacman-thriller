@@ -23,7 +23,6 @@ header {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /* border: solid green 1px; */
 }
 
 nav {
@@ -236,4 +235,29 @@ nav {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+
+@media only screen and (max-height: 1000px) {
+  body {
+    display: flex;
+    flex-direction: row;
+  }
+  header {
+    align-self: flex-start;
+  }
+  #grid {
+    display: flex;
+    flex-flow: row wrap;
+    width: 700px;
+    height: 700px;
+  }
+
+  #logo{
+    margin-top: 50px;
+  }
+
+  nav {
+    width: 100%;
+  }
+  
 }
